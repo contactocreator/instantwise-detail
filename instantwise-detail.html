@@ -32,6 +32,13 @@
     min-height: 100vh;
   }
 
+  @media (min-width: 1080px) {
+    body {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+  }
+
   /* ── NAV ── */
   nav {
     position: fixed;
@@ -829,34 +836,7 @@
 <body class="glaze-sand">
 
 
-<!-- HERO -->
-<section class="hero">
-  <div class="product-stage" id="stage">
-    <div class="stage-bg" id="stageBg"></div>
 
-    <!-- 파티클 -->
-    <div class="particles" id="particles"></div>
-
-    <!-- 틸트 컨테이너 -->
-    <div class="tilt-container" id="tiltContainer">
-      <div class="tilt-card" id="tiltCard">
-        <div class="ceramic-body" id="ceramicBody">
-          <img src="product-images/main.jpg.png" alt="product" style="width:100%;height:100%;object-fit:cover;display:block;">
-          <div class="specular-main" id="specMain"></div>
-          <div class="specular-sharp" id="specSharp"></div>
-          <div class="rim-light"></div>
-          <div class="viewer-badge">360°</div>
-        </div>
-        <div class="reflection" id="viewerReflection"></div>
-      </div>
-      <div class="drag-hint" id="dragHint">rotate</div>
-    </div>
-
-    <div class="tilt-indicator" id="tiltIndicator">touching</div>
-  </div>
-
-
-</section>
 
 
 <!-- 상세 이미지 -->
@@ -870,36 +850,7 @@
   <img src="product-images/7.jpg" alt="7">
   <img src="product-images/8.jpg" alt="8">
   <img src="product-images/9.jpg" alt="9">
-  <img src="product-images/10.jpg" alt="10">
 </section>
-
-<!-- 디테일 아코디언 -->
-<div style="margin: 0 0 0 0;">
-  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-top: 1px solid #E8E4DC;">
-    <span class="detail-toggle-label">Material & Care</span>
-    <div class="detail-toggle-icon"></div>
-  </div>
-  <div class="detail-content">
-    <div class="detail-text" style="padding: 16px 24px;">고화도 석기토를 사용하여 물레성형 후 1280°C에서 소성합니다. 자연 재유약은 매번 다른 표정을 만들어냅니다. 식기세척기 사용 가능, 전자레인지 사용 불가.</div>
-  </div>
-
-  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px;">
-    <span class="detail-toggle-label">Shipping & Returns</span>
-    <div class="detail-toggle-icon"></div>
-  </div>
-  <div class="detail-content">
-    <div class="detail-text" style="padding: 16px 24px;">주문 후 3–5일 내 발송. 수제품 특성상 교환·환불은 파손 제품에 한합니다. 각 제품은 고유한 유약 패턴을 가집니다.</div>
-  </div>
-
-  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-bottom: 1px solid #E8E4DC;">
-    <span class="detail-toggle-label">About the Maker</span>
-    <div class="detail-toggle-icon"></div>
-  </div>
-  <div class="detail-content">
-    <div class="detail-text" style="padding: 16px 24px;">Instantwise는 서울을 기반으로 한 도예 스튜디오입니다. 매 작품을 도예가가 직접 성형하며, 소량 생산으로 품질을 관리합니다.</div>
-  </div>
-</div>
-
 
 <!-- UGC 갤러리 -->
 <section class="ugc-section">
@@ -1071,6 +1022,10 @@
   </div>
 </section>
 
+<section class="product-detail-imgs" style="margin-top:30px;">
+  <img src="product-images/10.jpg" alt="10">
+</section>
+
 <!-- 디테일 아코디언 -->
 <div style="margin: 0 0 0 0;">
   <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-top: 1px solid #E8E4DC;">
@@ -1099,52 +1054,37 @@
 </div>
 
 
-<!-- UGC 갤러리 -->
-<section class="ugc-section">
-  <div class="ugc-header">
-    <h2 class="section-title" style="margin-bottom:0">From our community</h2>
-    <a href="#" class="ugc-hashtag">#instantwise</a>
+
+
+<!-- 디테일 아코디언 -->
+<div style="margin: 0 0 0 0;">
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-top: 1px solid #E8E4DC;">
+    <span class="detail-toggle-label">Material & Care</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">고화도 석기토를 사용하여 물레성형 후 1280°C에서 소성합니다. 자연 재유약은 매번 다른 표정을 만들어냅니다. 식기세척기 사용 가능, 전자레인지 사용 불가.</div>
   </div>
 
-  <div class="ugc-slider" id="ugcSlider">
-
-    <!-- Card 1 -->
-    <div class="ugc-card active">
-      <img class="ugc-img" src="ugc-images/ugc1.jpg" alt="UGC 1">
-    </div>
-
-    <!-- Card 2 -->
-    <div class="ugc-card">
-      <img class="ugc-img" src="ugc-images/ugc2.jpg" alt="UGC 2">
-    </div>
-
-    <!-- Card 3 -->
-    <div class="ugc-card">
-      <img class="ugc-img" src="ugc-images/ugc3.jpg" alt="UGC 3">
-    </div>
-
-    <!-- Card 4 -->
-    <div class="ugc-card">
-      <img class="ugc-img" src="ugc-images/ugc4.jpg" alt="UGC 4">
-    </div>
-
-    <!-- Card 5 -->
-    <div class="ugc-card">
-      <img class="ugc-img" src="ugc-images/ugc5.jpg" alt="UGC 5">
-    </div>
-
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px;">
+    <span class="detail-toggle-label">Shipping & Returns</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">주문 후 3–5일 내 발송. 수제품 특성상 교환·환불은 파손 제품에 한합니다. 각 제품은 고유한 유약 패턴을 가집니다.</div>
   </div>
 
-  <!-- 진행 바 -->
-  <div style="padding: 0 24px 32px;"><div id="ugcProgress" style="height:2px;background:#E8E4DC;border-radius:1px;"><div id="ugcProgressBar" style="height:100%;width:0%;background:var(--charcoal);border-radius:1px;transition:width 0.2s;"></div></div></div>
-  <div class="ugc-dots" id="ugcDots" style="display:none;">
-    <div class="ugc-dot active"></div>
-    <div class="ugc-dot"></div>
-    <div class="ugc-dot"></div>
-    <div class="ugc-dot"></div>
-    <div class="ugc-dot"></div>
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-bottom: 1px solid #E8E4DC;">
+    <span class="detail-toggle-label">About the Maker</span>
+    <div class="detail-toggle-icon"></div>
   </div>
-</section>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">Instantwise는 서울을 기반으로 한 도예 스튜디오입니다. 매 작품을 도예가가 직접 성형하며, 소량 생산으로 품질을 관리합니다.</div>
+  </div>
+</div>
+
+
+
 
 
 <script>
