@@ -1,0 +1,4 @@
+node_modules/
+.omc/
+*.lock
+ds-studio/
