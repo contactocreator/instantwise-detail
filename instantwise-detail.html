@@ -94,12 +94,12 @@
     transition: background 0.6s ease;
   }
 
-  /* 3D 틸트 카드 */
+  /* 3D 뷰어 */
   .tilt-container {
     position: relative;
-    width: 280px;
-    height: 280px;
-    perspective: 800px;
+    width: min(72vw, 280px);
+    height: min(72vw, 280px);
+    perspective: 420px;
     cursor: grab;
     z-index: 2;
     touch-action: none;
@@ -113,156 +113,113 @@
     position: relative;
     transform-style: preserve-3d;
     transform: rotateX(0deg) rotateY(0deg);
-    transition: transform 0.1s ease-out;
-    border-radius: 50%;
     will-change: transform;
   }
 
-  /* 세라믹 베이스 */
+  /* 뷰어 바디 */
   .ceramic-body {
     position: absolute;
     inset: 0;
-    border-radius: 50%;
     background: #000;
-    box-shadow:
-      0 20px 60px rgba(0,0,0,0.35),
-      0 8px 24px rgba(0,0,0,0.2);
     overflow: hidden;
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.5),
+      0 10px 30px rgba(0,0,0,0.3);
   }
 
-  /* 세라믹 텍스처 레이어 */
-  .ceramic-texture {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(255,255,255,0.03) 3px,
-        rgba(255,255,255,0.03) 4px
-      );
-    mix-blend-mode: overlay;
-  }
-
-  /* 스페큘러 하이라이트 - 금속용 */
+  /* 환경광 오버레이 — 틸트 따라 이동 */
   .specular-main {
     position: absolute;
-    border-radius: 50%;
+    inset: 0;
     background: radial-gradient(
-      ellipse 50% 40% at 50% 50%,
-      rgba(255,255,255,0.55) 0%,
-      rgba(255,255,255,0.2) 35%,
-      rgba(255,255,255,0.03) 60%,
-      transparent 80%
+      ellipse 70% 60% at 30% 25%,
+      rgba(255,255,255,0.12) 0%,
+      transparent 65%
     );
-    width: 65%;
-    height: 55%;
-    top: 8%;
-    left: 17%;
     transition: all 0.08s ease-out;
     mix-blend-mode: screen;
     pointer-events: none;
   }
 
-  /* 보조 하이라이트 - 금속 날카로운 반사 */
+  /* 엣지 하이라이트 */
   .specular-sharp {
     position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(255,255,255,1) 0%,
-      rgba(255,255,255,0.6) 20%,
-      rgba(255,255,255,0.1) 45%,
-      transparent 65%
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.08) 0%,
+      transparent 50%,
+      rgba(0,0,0,0.15) 100%
     );
-    width: 22%;
-    height: 18%;
-    top: 14%;
-    left: 22%;
     transition: all 0.06s ease-out;
-    mix-blend-mode: screen;
     pointer-events: none;
   }
 
-  /* 엣지 림 라이트 */
+  /* 뷰어 프레임 테두리 */
   .rim-light {
     position: absolute;
     inset: 0;
-    border-radius: 50%;
-    background: radial-gradient(
-      ellipse 100% 100% at 80% 85%,
-      rgba(255,220,180,0.35) 0%,
-      transparent 50%
-    );
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
     pointer-events: none;
+    z-index: 2;
   }
 
-  /* 반사 하단 */
+  /* 바닥 그림자 */
   .reflection {
     position: absolute;
-    bottom: -10%;
-    left: 10%;
-    width: 80%;
-    height: 30%;
-    background: radial-gradient(
-      ellipse at 50% 0%,
-      rgba(0,0,0,0.12) 0%,
-      transparent 80%
-    );
-    filter: blur(8px);
+    bottom: -20px;
+    left: 5%;
+    width: 90%;
+    height: 20px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.3) 0%, transparent 80%);
+    filter: blur(6px);
     pointer-events: none;
+    transform-origin: top;
+    transition: transform 0.08s ease-out;
   }
 
-  /* 도자기 라인 디테일 (던진 흙 결) */
-  .ceramic-rings {
-    position: absolute;
-    inset: 10%;
-    border-radius: 50%;
-    background:
-      repeating-radial-gradient(
-        circle at 50% 52%,
-        transparent 0px,
-        transparent 18px,
-        rgba(0,0,0,0.025) 19px,
-        transparent 20px
-      );
-    mix-blend-mode: multiply;
-  }
-
-  /* 제품 레이블 (세라믹 위) */
-  .product-label {
-    position: absolute;
-    bottom: 28%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    color: rgba(44, 44, 42, 0.45);
-    font-family: 'Helvetica Neue', sans-serif;
-    text-transform: uppercase;
-    white-space: nowrap;
-    pointer-events: none;
-  }
-
-  /* 인터랙션 힌트 */
+  /* 드래그 힌트 */
   .drag-hint {
     position: absolute;
-    bottom: -36px;
+    bottom: -32px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 11px;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     color: var(--muted);
     font-family: 'Helvetica Neue', sans-serif;
     text-transform: uppercase;
     opacity: 1;
     transition: opacity 0.4s;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .drag-hint::before {
+    content: '';
+    width: 14px; height: 14px;
+    border: 1px solid var(--muted);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
   }
 
   .drag-hint.hidden { opacity: 0; }
+
+  /* 360 배지 */
+  .viewer-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+    z-index: 3;
+    pointer-events: none;
+  }
 
   /* 플로팅 파티클 */
   .particles {
@@ -677,10 +634,10 @@
   /* 카드 */
   .ugc-card {
     flex-shrink: 0;
-    width: calc(100vw - 72px); /* 양쪽 peek */
+    width: calc(100vw - 72px);
     max-width: 320px;
     scroll-snap-align: center;
-    border-radius: 20px;
+    border-radius: 0;
     overflow: hidden;
     position: relative;
     background: var(--cream);
@@ -884,14 +841,15 @@
     <div class="tilt-container" id="tiltContainer">
       <div class="tilt-card" id="tiltCard">
         <div class="ceramic-body" id="ceramicBody">
-          <img src="product-images/main.jpg.png" alt="product" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">
+          <img src="product-images/main.jpg.png" alt="product" style="width:100%;height:100%;object-fit:cover;display:block;">
           <div class="specular-main" id="specMain"></div>
           <div class="specular-sharp" id="specSharp"></div>
           <div class="rim-light"></div>
+          <div class="viewer-badge">360°</div>
         </div>
-        <div class="reflection"></div>
+        <div class="reflection" id="viewerReflection"></div>
       </div>
-      <div class="drag-hint" id="dragHint">drag to tilt</div>
+      <div class="drag-hint" id="dragHint">rotate</div>
     </div>
 
     <div class="tilt-indicator" id="tiltIndicator">touching</div>
@@ -942,39 +900,204 @@
   </div>
 </div>
 
-<!-- 제작 과정 -->
-<section class="craft-section">
-  <div class="craft-label">How it's made</div>
-  <h2 class="craft-title">흙에서 식탁까지,<br>손의 기억</h2>
-  <p class="craft-text">물레 위에서 회전하는 흙 한 덩이가 도예가의 손을 통해 형태를 얻습니다. 건조, 초벌, 유약, 재벌. 수백 시간의 기다림 끝에 하나의 그릇이 탄생합니다.</p>
-  <div class="craft-steps">
-    <div class="craft-step">
-      <div class="step-num">01</div>
-      <div class="step-label">Wedging</div>
-      <div class="step-desc">공기를 제거하고 균일한 밀도로 반죽</div>
-    </div>
-    <div class="craft-step">
-      <div class="step-num">02</div>
-      <div class="step-label">Throwing</div>
-      <div class="step-desc">물레에서 원하는 형태로 성형</div>
-    </div>
-    <div class="craft-step">
-      <div class="step-num">03</div>
-      <div class="step-label">Bisque Fire</div>
-      <div class="step-desc">900°C 초벌 소성으로 강도 확보</div>
-    </div>
-    <div class="craft-step">
-      <div class="step-num">04</div>
-      <div class="step-label">Glazing</div>
-      <div class="step-desc">자연 재유약을 손으로 직접 도포</div>
-    </div>
-    <div class="craft-step">
-      <div class="step-num">05</div>
-      <div class="step-label">Final Fire</div>
-      <div class="step-desc">1280°C 고화도 소성, 유약 유리화</div>
-    </div>
+
+<!-- UGC 갤러리 -->
+<section class="ugc-section">
+  <div class="ugc-slider" id="ugcSlider">
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_001.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_002.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_003.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_004.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_005.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_006.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_007.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_008.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_009.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_010.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_011.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_012.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_013.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_014.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_015.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_016.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_017.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_018.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_019.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_020.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_021.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_022.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_023.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_024.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_025.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_026.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_027.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_028.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_029.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_030.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_031.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_032.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_033.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_034.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_035.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_036.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_037.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_038.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_039.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_040.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_041.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_042.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_043.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_044.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_045.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_046.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_047.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_048.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_049.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_050.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_051.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_052.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_053.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_054.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_055.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_056.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_057.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_058.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_059.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_060.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_061.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_062.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_063.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_064.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_065.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_066.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_067.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_068.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_069.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_070.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_071.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_072.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_073.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_074.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_075.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_076.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_077.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_078.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_079.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_080.jpg" alt=""></div>
+    <div class="ugc-card"><img class="ugc-img" src="ugc-images/renamed_081.jpg" alt=""></div>
+  </div>
+  <div class="ugc-dots" id="ugcDots">
+    <div class="ugc-dot  active"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
   </div>
 </section>
+
+<!-- 디테일 아코디언 -->
+<div style="margin: 0 0 0 0;">
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-top: 1px solid #E8E4DC;">
+    <span class="detail-toggle-label">Material & Care</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">고화도 석기토를 사용하여 물레성형 후 1280°C에서 소성합니다. 자연 재유약은 매번 다른 표정을 만들어냅니다. 식기세척기 사용 가능, 전자레인지 사용 불가.</div>
+  </div>
+
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px;">
+    <span class="detail-toggle-label">Shipping & Returns</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">주문 후 3–5일 내 발송. 수제품 특성상 교환·환불은 파손 제품에 한합니다. 각 제품은 고유한 유약 패턴을 가집니다.</div>
+  </div>
+
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-bottom: 1px solid #E8E4DC;">
+    <span class="detail-toggle-label">About the Maker</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">Instantwise는 서울을 기반으로 한 도예 스튜디오입니다. 매 작품을 도예가가 직접 성형하며, 소량 생산으로 품질을 관리합니다.</div>
+  </div>
+</div>
+
 
 <!-- UGC 갤러리 -->
 <section class="ugc-section">
@@ -1012,8 +1135,9 @@
 
   </div>
 
-  <!-- 도트 인디케이터 -->
-  <div class="ugc-dots" id="ugcDots">
+  <!-- 진행 바 -->
+  <div style="padding: 0 24px 32px;"><div id="ugcProgress" style="height:2px;background:#E8E4DC;border-radius:1px;"><div id="ugcProgressBar" style="height:100%;width:0%;background:var(--charcoal);border-radius:1px;transition:width 0.2s;"></div></div></div>
+  <div class="ugc-dots" id="ugcDots" style="display:none;">
     <div class="ugc-dot active"></div>
     <div class="ugc-dot"></div>
     <div class="ugc-dot"></div>
@@ -1291,6 +1415,7 @@ function toggleDetail(toggle) {
 // ── UGC 슬라이더 ──
 const ugcSlider = document.getElementById('ugcSlider');
 const ugcCards = ugcSlider.querySelectorAll('.ugc-card');
+// 도트는 최대 10개만 표시 (81장이라 전부 표시 불필요)
 const ugcDots = document.querySelectorAll('.ugc-dot');
 let activeIndex = 0;
 
@@ -1313,7 +1438,11 @@ function updateUgcActive() {
   }
 }
 
-ugcSlider.addEventListener('scroll', updateUgcActive, { passive: true });
+ugcSlider.addEventListener('scroll', () => {
+  updateUgcActive();
+  const pct = ugcSlider.scrollLeft / (ugcSlider.scrollWidth - ugcSlider.clientWidth) * 100;
+  document.getElementById('ugcProgressBar').style.width = pct + '%';
+}, { passive: true });
 
 // 드래그 (데스크탑)
 let isDragging = false, dragStartX = 0, dragScrollLeft = 0;

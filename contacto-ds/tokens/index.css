@@ -1,0 +1,620 @@
+/**
+ * CONTACTO Design System — v2.0.0
+ * Source of truth: Figma "⭐️ real contacto" (2ofJEZzVoCk4jtcfKkiZEb)
+ * 마지막 동기화: 2026-03-22
+ *
+ * 3-Layer Architecture:
+ *   Layer 1: Primitive  — 원시값, 직접 사용 금지 (--_ prefix)
+ *   Layer 2: Semantic   — 의미 단위, 테마 전환 지원
+ *   Layer 3: Component  — 컴포넌트 스타일
+ *
+ * ⚠️  FONT LICENSE WARNING
+ *   FK Raster Roman Compact Trial → "Trial" 제거 전 상업 배포 불가
+ *   ABC Diatype Unlicensed Trial  → 동일. 라이선스 구매 또는 대체 폰트 확정 필요.
+ *   Pretendard → OFL 라이선스, 상업 사용 가능 ✓
+ *
+ * 사용법: @import 'contacto-ds/tokens/index.css'
+ */
+
+/* ═══════════════════════════════════════════════════════
+   LAYER 1 — Primitive Tokens
+   절대 직접 사용 금지 — semantic 레이어를 통해 참조
+   ═══════════════════════════════════════════════════════ */
+:root {
+
+  /* ── Neutrals ───────────────────────────────────────── */
+  --_white:       #ffffff;
+  --_black:       #000000;
+  --_off-white:   #fefefe;   /* Figma "White" 토큰 — 오프화이트 (의도 확인 필요) */
+  --_grey-100:    #dcdddd;   /* ct_background_grey */
+  --_grey-300:    #c8c8c8;   /* ct_grey */
+  --_grey-500:    #909090;   /* ct_darkgrey */
+  --_grey-900:    #16191c;   /* Text / Light / Primary */
+
+  /* ── Category Backgrounds (파스텔, 카드/섹션 배경용) ── */
+  --_cat-pink:    #f5dfdb;   /* ct_background_pink */
+  --_cat-orange:  #f9af55;   /* ct_background_orange */
+  --_cat-yellow:  #fff629;   /* ct_background_yellow */
+  --_cat-yg:      #dae000;   /* ct_background_yg (yellow-green) */
+  --_cat-blue:    #2ea7e0;   /* ct_background_blue */
+  --_cat-grey:    #dcdddd;   /* ct_background_grey (= --_grey-100) */
+
+  /* ── Filter / Tag Colors (비비드, 필터 칩/태그용) ───── */
+  --_filter-blue:   #1a76ff;
+  --_filter-pink:   #ef62c7;
+  --_filter-red:    #fe3843;
+  --_filter-yellow: #ffdb1c;
+  --_filter-green:  #98fe68;
+
+  /* ── Specialty / Accent ─────────────────────────────── */
+  --_accent-green:  #17db4e;   /* ct_specialty_green — 성공/강조 */
+  --_accent-brown:  #c2986d;   /* ct_specialty_brown */
+  --_accent-blush:  #e4d5d5;   /* ct_specialty_pink — 연핑크 */
+
+  /* ── System Reference (iOS 시스템 컬러, 개발 참고용) ── */
+  --_ios-blue:    #007aff;
+
+  /* ── Spacing (4pt grid) ─────────────────────────────── */
+  --_space-1:   4px;
+  --_space-2:   8px;
+  --_space-3:  12px;
+  --_space-4:  16px;
+  --_space-5:  20px;
+  --_space-6:  24px;
+  --_space-8:  32px;
+  --_space-10: 40px;
+  --_space-12: 48px;
+  --_space-16: 64px;
+
+  /* ── Radius ─────────────────────────────────────────── */
+  --_radius-sm:   4px;
+  --_radius-md:   8px;
+  --_radius-lg:  12px;
+  --_radius-xl:  16px;
+  --_radius-2xl: 24px;
+  --_radius-full: 9999px;
+
+  /* ── Font Size (Figma 실제값 기준) ──────────────────── */
+  --_text-10:  10px;   /* caption-regular */
+  --_text-13:  13px;   /* body-regular (Pretendard) */
+  --_text-14:  14px;   /* subtitle-medium */
+  --_text-15:  15px;   /* body-sm [Figma: "body_middle 16" 실제값은 15px] */
+  --_text-16:  16px;   /* body-regular, button, body-blended */
+  --_text-20:  20px;   /* body-blended-lg */
+  --_text-26:  26px;   /* subtitle-blended [Figma: "subtitle_blended_27" 실제값은 26px] */
+  --_text-32:  32px;   /* title-semi */
+  --_text-37:  37px;   /* title-bold */
+  --_text-90:  90px;   /* display */
+
+  /* ── Font Weight ─────────────────────────────────────── */
+  --_fw-regular:   400;
+  --_fw-medium:    500;
+  --_fw-semibold:  600;
+  --_fw-bold:      700;
+  --_fw-black:     900;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   LAYER 2 — Semantic Tokens
+   Light Mode (기본 — Figma 디자인 기준)
+   ═══════════════════════════════════════════════════════ */
+:root,
+[data-theme="light"] {
+
+  /* ── Surface ──────────────────────────────────────────── */
+  --surface-base:    var(--_white);
+  --surface-raised:  #f8f8f8;
+  --surface-overlay: var(--_white);
+  --surface-muted:   var(--_grey-100);
+
+  /* ── Border ───────────────────────────────────────────── */
+  --border-subtle:   var(--_grey-100);
+  --border-default:  var(--_grey-300);
+  --border-strong:   var(--_grey-500);
+  --border-focus:    var(--_black);
+
+  /* ── Text ─────────────────────────────────────────────── */
+  --text-primary:    var(--_grey-900);
+  --text-secondary:  var(--_grey-500);
+  --text-disabled:   var(--_grey-300);
+  --text-inverse:    var(--_white);
+  --text-on-accent:  var(--_white);
+
+  /* ── Accent / Brand ───────────────────────────────────── */
+  --accent:          var(--_black);
+  --accent-hover:    #333333;
+  --accent-subtle:   rgba(0, 0, 0, 0.05);
+  --accent-muted:    rgba(0, 0, 0, 0.10);
+  --accent-border:   rgba(0, 0, 0, 0.20);
+
+  /* ── Category Backgrounds ─────────────────────────────── */
+  --category-pink:    var(--_cat-pink);
+  --category-orange:  var(--_cat-orange);
+  --category-yellow:  var(--_cat-yellow);
+  --category-yg:      var(--_cat-yg);
+  --category-blue:    var(--_cat-blue);
+  --category-grey:    var(--_cat-grey);
+
+  /* ── Filter / Tag Colors ──────────────────────────────── */
+  --filter-blue:    var(--_filter-blue);
+  --filter-pink:    var(--_filter-pink);
+  --filter-red:     var(--_filter-red);
+  --filter-yellow:  var(--_filter-yellow);
+  --filter-green:   var(--_filter-green);
+
+  /* ── Feedback ─────────────────────────────────────────── */
+  --feedback-success:        var(--_accent-green);
+  --feedback-success-subtle: rgba(23, 219, 78, 0.10);
+  --feedback-success-border: rgba(23, 219, 78, 0.25);
+
+  --feedback-warning:        var(--_filter-yellow);
+  --feedback-warning-subtle: rgba(255, 219, 28, 0.15);
+  --feedback-warning-border: rgba(255, 219, 28, 0.30);
+
+  --feedback-error:          var(--_filter-red);
+  --feedback-error-subtle:   rgba(254, 56, 67, 0.10);
+  --feedback-error-border:   rgba(254, 56, 67, 0.25);
+
+  --feedback-info:           var(--_ios-blue);
+  --feedback-info-subtle:    rgba(0, 122, 255, 0.10);
+  --feedback-info-border:    rgba(0, 122, 255, 0.25);
+
+  /* ── Spacing (semantic aliases) ───────────────────────── */
+  --space-xs:   var(--_space-1);    /*  4px */
+  --space-sm:   var(--_space-2);    /*  8px */
+  --space-md:   var(--_space-3);    /* 12px */
+  --space-lg:   var(--_space-4);    /* 16px */
+  --space-xl:   var(--_space-6);    /* 24px */
+  --space-2xl:  var(--_space-8);    /* 32px */
+  --space-3xl:  var(--_space-10);   /* 40px */
+
+  /* ── Radius (semantic aliases) ────────────────────────── */
+  --radius-sm:   var(--_radius-sm);    /*  4px — chip, tag */
+  --radius-md:   var(--_radius-md);    /*  8px — button, input */
+  --radius-lg:   var(--_radius-lg);    /* 12px — card */
+  --radius-xl:   var(--_radius-xl);    /* 16px — bottom sheet */
+  --radius-2xl:  var(--_radius-2xl);   /* 24px — large card */
+  --radius-full: var(--_radius-full);  /* pill, avatar */
+
+  /* ── Typography ───────────────────────────────────────── */
+  /*
+   * 폰트 패밀리 전략:
+   *   --font-display  → FK Raster (브랜드/감성 텍스트) ⚠️ Trial
+   *   --font-ui       → ABC Diatype (UI 텍스트)        ⚠️ Trial
+   *   --font-body-kr  → Pretendard (한글 본문)          ✓ 무료
+   *
+   * [!] Trial 폰트 대체 시:
+   *   --font-display: "Space Mono", "JetBrains Mono", monospace
+   *   --font-ui:      "Inter", "Pretendard", sans-serif
+   */
+  --font-display: "FK Raster Roman Compact", "Space Mono", monospace;
+  --font-ui:      "ABC Diatype", "Inter", "Pretendard", sans-serif;
+  --font-body-kr: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-system:  -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+  --font-mono:    "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+
+  /* Font Weight */
+  --fw-regular:   var(--_fw-regular);
+  --fw-medium:    var(--_fw-medium);
+  --fw-semibold:  var(--_fw-semibold);
+  --fw-bold:      var(--_fw-bold);
+  --fw-black:     var(--_fw-black);
+
+  /* Type Scale (Figma 원본 실제값 기준)
+   *
+   * 이름 규칙: --type-{role}-{size}
+   * [!] 표시는 Figma 원본 이름-값 불일치 수정 내역
+   */
+
+  /* Display — FK Raster, 브랜드/히어로 텍스트 */
+  --type-display:           var(--_text-90);
+  --type-display-lh:        1;
+  --type-display-ls:        5px;
+
+  /* Subtitle Display — FK Raster */
+  --type-subtitle-display:      var(--_text-26);   /* [!] 원본명 "27", 실제값 26px */
+  --type-subtitle-display-lh:   1;
+  --type-subtitle-display-ls:   5px;
+
+  /* Title */
+  --type-title-lg:          var(--_text-37);   /* ABC Diatype Bold */
+  --type-title-lg-lh:       1.13;
+  --type-title-lg-ls:       0;
+
+  --type-title-md:          var(--_text-32);   /* SUIT SemiBold */
+  --type-title-md-lh:       1.4;
+  --type-title-md-ls:       0;
+
+  /* Subtitle */
+  --type-subtitle:          var(--_text-14);   /* ABC Diatype Medium */
+  --type-subtitle-lh:       1;
+  --type-subtitle-ls:       0;
+
+  /* Body */
+  --type-body-display:      var(--_text-20);   /* FK Raster Blended */
+  --type-body-display-lh:   1;                 /* [!] 원본 lh:100 → 100% = 1 */
+  --type-body-display-ls:   5px;
+
+  --type-body-lg:           var(--_text-16);   /* ABC Diatype Regular */
+  --type-body-lg-lh:        1.375;             /* 22px / 16px */
+  --type-body-lg-ls:        0;
+
+  --type-body-md:           var(--_text-15);   /* ABC Diatype Bold [!] 원본명 "16", 실제값 15px */
+  --type-body-md-lh:        1.3;
+  --type-body-md-ls:        0;
+  --type-body-md-weight:    var(--_fw-bold);
+
+  --type-body-blended:      var(--_text-16);   /* FK Raster Blended */
+  --type-body-blended-lh:   1;                 /* [!] 원본 lh:100 → 1 */
+  --type-body-blended-ls:   5px;
+
+  /* Body Korean */
+  --type-body-kr:           var(--_text-15);   /* Pretendard Regular */
+  --type-body-kr-lh:        1.3;
+
+  --type-body-kr-sm:        var(--_text-13);   /* Pretendard Regular */
+  --type-body-kr-sm-lh:     1.308;             /* 17px / 13px */
+
+  /* Caption */
+  --type-caption-display:   var(--_text-13);   /* FK Raster Blended */
+  --type-caption-display-lh: 1.5;
+  --type-caption-display-ls: 5px;
+
+  --type-caption:           var(--_text-10);   /* ABC Diatype Regular */
+  --type-caption-lh:        1;
+  --type-caption-ls:        0;
+
+  /* Button */
+  --type-button:            var(--_text-16);   /* ABC Diatype Black (900) */
+  --type-button-lh:         1.5;
+  --type-button-ls:         0;
+  --type-button-weight:     var(--_fw-black);
+
+  /* ── Transition ───────────────────────────────────────── */
+  --ease-default:  cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --transition-fast: var(--duration-fast) var(--ease-default);
+  --transition-base: var(--duration-base) var(--ease-default);
+  --transition-slow: var(--duration-slow) var(--ease-default);
+
+  /* ── Shadow ───────────────────────────────────────────── */
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.16);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.20);
+
+  /* ── Z-index ──────────────────────────────────────────── */
+  --z-base:    0;
+  --z-raised:  10;
+  --z-sticky:  50;
+  --z-overlay: 100;
+  --z-modal:   1000;
+  --z-toast:   2000;
+  --z-tooltip: 3000;
+
+  /* ── Icon Size ────────────────────────────────────────── */
+  --icon-sm:  16px;
+  --icon-md:  24px;   /* 기본 (Figma: Icons/close_24px 등) */
+  --icon-lg:  32px;
+  --icon-xl:  48px;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   LAYER 2 — Dark Mode
+   ⚠️  Figma에 다크모드 디자인 없음 — 아래는 제안값
+   디자이너 확인 후 확정 필요
+   ═══════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --surface-base:    #0a0a0f;
+  --surface-raised:  #13131a;
+  --surface-overlay: #1c1c28;
+  --surface-muted:   #2a2a3d;
+
+  --border-subtle:   #2a2a3d;
+  --border-default:  #4a4a6a;
+  --border-strong:   #6a6a8a;
+  --border-focus:    var(--_white);
+
+  --text-primary:    #f0f0f5;
+  --text-secondary:  #8888aa;
+  --text-disabled:   #4a4a6a;
+  --text-inverse:    var(--_black);
+  --text-on-accent:  var(--_black);
+
+  --accent:          var(--_white);
+  --accent-hover:    #cccccc;
+  --accent-subtle:   rgba(255, 255, 255, 0.05);
+  --accent-muted:    rgba(255, 255, 255, 0.10);
+  --accent-border:   rgba(255, 255, 255, 0.20);
+
+  /* category/filter 컬러는 다크/라이트 공통 (비비드 컬러는 테마 무관) */
+
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.40);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.50);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.60);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.70);
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   LAYER 3 — Base Styles & Component Tokens
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font-family: var(--font-body-kr);
+  font-size: var(--type-body-kr);
+  line-height: var(--type-body-kr-lh);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface-raised); }
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ── Focus Ring ───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* ── Typography Utility Classes ───────────────────────── */
+.ct-type-display {
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  line-height: var(--type-display-lh);
+  letter-spacing: var(--type-display-ls);
+  font-weight: var(--fw-regular);
+}
+
+.ct-type-title-lg {
+  font-family: var(--font-ui);
+  font-size: var(--type-title-lg);
+  font-weight: var(--fw-bold);
+  line-height: var(--type-title-lg-lh);
+  letter-spacing: var(--type-title-lg-ls);
+}
+
+.ct-type-title-md {
+  font-family: var(--font-body-kr);
+  font-size: var(--type-title-md);
+  font-weight: var(--fw-semibold);
+  line-height: var(--type-title-md-lh);
+}
+
+.ct-type-body {
+  font-family: var(--font-ui);
+  font-size: var(--type-body-lg);
+  font-weight: var(--fw-regular);
+  line-height: var(--type-body-lg-lh);
+}
+
+.ct-type-body-kr {
+  font-family: var(--font-body-kr);
+  font-size: var(--type-body-kr);
+  font-weight: var(--fw-regular);
+  line-height: var(--type-body-kr-lh);
+}
+
+.ct-type-caption {
+  font-family: var(--font-ui);
+  font-size: var(--type-caption);
+  font-weight: var(--fw-regular);
+  line-height: var(--type-caption-lh);
+}
+
+.ct-type-button {
+  font-family: var(--font-ui);
+  font-size: var(--type-button);
+  font-weight: var(--type-button-weight);
+  line-height: var(--type-button-lh);
+  letter-spacing: var(--type-button-ls);
+}
+
+/* ── Button ───────────────────────────────────────────── */
+.ct-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-full);
+  border: 1.5px solid transparent;
+  font-family: var(--font-ui);
+  font-size: var(--type-button);
+  font-weight: var(--type-button-weight);
+  line-height: var(--type-button-lh);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.ct-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ct-btn--primary {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-color: var(--accent);
+}
+.ct-btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.ct-btn--outline {
+  background: transparent;
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+.ct-btn--outline:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ct-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+.ct-btn--ghost:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+/* ── Input ────────────────────────────────────────────── */
+.ct-input {
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  font-family: var(--font-body-kr);
+  font-size: var(--type-body-kr);
+  line-height: var(--type-body-kr-lh);
+  transition: border-color var(--transition-fast);
+  outline: none;
+}
+.ct-input:focus { border-color: var(--border-focus); }
+.ct-input::placeholder { color: var(--text-disabled); }
+.ct-input--error { border-color: var(--feedback-error); }
+.ct-input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Filter Tag / Chip ────────────────────────────────── */
+.ct-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--type-caption);
+  font-weight: var(--fw-medium);
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  color: var(--_black);
+}
+.ct-tag:hover { opacity: 0.85; }
+.ct-tag--blue   { background: var(--filter-blue);   color: var(--_white); }
+.ct-tag--pink   { background: var(--filter-pink);   color: var(--_white); }
+.ct-tag--red    { background: var(--filter-red);    color: var(--_white); }
+.ct-tag--yellow { background: var(--filter-yellow); color: var(--_black); }
+.ct-tag--green  { background: var(--filter-green);  color: var(--_black); }
+
+/* ── Category Card Background ─────────────────────────── */
+.ct-cat--pink   { background: var(--category-pink); }
+.ct-cat--orange { background: var(--category-orange); }
+.ct-cat--yellow { background: var(--category-yellow); }
+.ct-cat--yg     { background: var(--category-yg); }
+.ct-cat--blue   { background: var(--category-blue); }
+.ct-cat--grey   { background: var(--category-grey); }
+
+/* ── Card / Panel ─────────────────────────────────────── */
+.ct-panel {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+/* ── Feedback ─────────────────────────────────────────── */
+.ct-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--type-caption);
+  line-height: 1.5;
+}
+.ct-feedback--success {
+  background: var(--feedback-success-subtle);
+  border: 1px solid var(--feedback-success-border);
+  color: var(--feedback-success);
+}
+.ct-feedback--warning {
+  background: var(--feedback-warning-subtle);
+  border: 1px solid var(--feedback-warning-border);
+  color: var(--feedback-warning);
+}
+.ct-feedback--error {
+  background: var(--feedback-error-subtle);
+  border: 1px solid var(--feedback-error-border);
+  color: var(--feedback-error);
+}
+.ct-feedback--info {
+  background: var(--feedback-info-subtle);
+  border: 1px solid var(--feedback-info-border);
+  color: var(--feedback-info);
+}
+
+/* ── Divider ──────────────────────────────────────────── */
+.ct-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  border: none;
+  margin: 0;
+}
+
+/* ── Spinner ──────────────────────────────────────────── */
+.ct-spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-subtle);
+  border-top-color: var(--accent);
+  border-radius: var(--radius-full);
+  animation: ct-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+.ct-spinner--sm { width: 14px; height: 14px; }
+.ct-spinner--lg { width: 28px; height: 28px; }
+
+/* ── Skeleton ─────────────────────────────────────────── */
+.ct-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface-overlay) 25%,
+    var(--surface-muted) 50%,
+    var(--surface-overlay) 75%
+  );
+  background-size: 200% 100%;
+  animation: ct-shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Animations ───────────────────────────────────────── */
+@keyframes ct-fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ct-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ct-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes ct-slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

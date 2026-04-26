@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"ls \\\"/Users/bag-yohan/Library/CloudStorage/OneDrive-wakawaka/디자인/01 CONTACTO/16 개발/ugc-images/\\\"*.jpg 2>/dev/null | wc -l\\nls \\\"/Users/bag-yohan/Library/CloudStorage/OneDrive-wakawaka/디자인/...",
+  "error": "Exit code 1\n      81\n#광고 #코드그라피.jpg\n#광고 COLLECTOR (1).jpg\n#광고 🤍휴일이 많아서 그런지위도 커진 기분금방 배고파짐…🤓🍩🤎-@instant_wise (3).jpg\n1-2.jpg\n1-3.jpg\n1.jpg\n2.jpg\n3-2.jpg\n3-3.jpg\n3.jpg\nGo🏍️ (1).jpg\nGo🏍️ (2).jpg\nGo🏍️ (3).jpg\nGo🏍️ (4).jpg\nGo🏍️ (5).jpg\nGo🏍️.jpg\nI love strawberry 🍓🍓🍓𓈒 𓂂𓏸 (1).jpg\nI love strawberry 🍓🍓🍓𓈒 𓂂𓏸 (2).jpg\nI love strawberry 🍓🍓🍓𓈒 𓂂𓏸.jpg\nSnapInsta.to_631791771_18419692288189690_5403715817882126881_n.jpg\nSnapInsta.to_632374359_17931076947194598_5219235516284248262_n.jpg\n...",
+  "timestamp": "2026-04-26T09:40:13.419Z",
+  "retry_count": 1
+}

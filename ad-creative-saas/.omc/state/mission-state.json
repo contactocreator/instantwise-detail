@@ -1,0 +1,79 @@
+{
+  "updatedAt": "2026-03-26T13:54:59.470Z",
+  "missions": [
+    {
+      "id": "session:7f007519-9383-4306-9a9b-1b8e94a72e5a:none",
+      "source": "session",
+      "name": "none",
+      "objective": "Session mission",
+      "createdAt": "2026-03-26T13:53:47.956Z",
+      "updatedAt": "2026-03-26T13:54:59.470Z",
+      "status": "done",
+      "workerCount": 2,
+      "taskCounts": {
+        "total": 2,
+        "pending": 0,
+        "blocked": 0,
+        "inProgress": 0,
+        "completed": 2,
+        "failed": 0
+      },
+      "agents": [
+        {
+          "name": "Explore:ac3db2e",
+          "role": "Explore",
+          "ownership": "ac3db2e1005ad3d9c",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T13:54:36.733Z"
+        },
+        {
+          "name": "copywriter-godin:aca52e1",
+          "role": "copywriter-godin",
+          "ownership": "aca52e1a65f9e3f49",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T13:54:59.470Z"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "session-start:ac3db2e1005ad3d9c:2026-03-26T13:53:47.956Z",
+          "at": "2026-03-26T13:53:47.956Z",
+          "kind": "update",
+          "agent": "Explore:ac3db2e",
+          "detail": "started Explore:ac3db2e",
+          "sourceKey": "session-start:ac3db2e1005ad3d9c"
+        },
+        {
+          "id": "session-start:aca52e1a65f9e3f49:2026-03-26T13:54:03.264Z",
+          "at": "2026-03-26T13:54:03.264Z",
+          "kind": "update",
+          "agent": "copywriter-godin:aca52e1",
+          "detail": "started copywriter-godin:aca52e1",
+          "sourceKey": "session-start:aca52e1a65f9e3f49"
+        },
+        {
+          "id": "session-stop:ac3db2e1005ad3d9c:2026-03-26T13:54:36.733Z",
+          "at": "2026-03-26T13:54:36.733Z",
+          "kind": "completion",
+          "agent": "Explore:ac3db2e",
+          "detail": "completed",
+          "sourceKey": "session-stop:ac3db2e1005ad3d9c"
+        },
+        {
+          "id": "session-stop:aca52e1a65f9e3f49:2026-03-26T13:54:59.470Z",
+          "at": "2026-03-26T13:54:59.470Z",
+          "kind": "completion",
+          "agent": "copywriter-godin:aca52e1",
+          "detail": "completed",
+          "sourceKey": "session-stop:aca52e1a65f9e3f49"
+        }
+      ]
+    }
+  ]
+}

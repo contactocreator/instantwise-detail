@@ -1,0 +1,42 @@
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tab-bar {
+  display: flex;
+  padding: 8px 12px 0;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-btn {
+  padding: 6px 14px;
+  border-radius: 6px 6px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  position: relative;
+  bottom: -1px;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-bottom-color: var(--bg-secondary);
+}
+
+.tab-content {
+  flex: 1;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}

@@ -1,0 +1,4 @@
+{"t":0,"agent":"ac3db2e","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"aca52e1","agent_type":"copywriter-godin","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ac3db2e","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":48777}
+{"t":0,"agent":"aca52e1","agent_type":"copywriter-godin","event":"agent_stop","success":true,"duration_ms":56206}

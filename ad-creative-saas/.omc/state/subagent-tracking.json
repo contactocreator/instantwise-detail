@@ -1,0 +1,26 @@
+{
+  "agents": [
+    {
+      "agent_id": "ac3db2e1005ad3d9c",
+      "agent_type": "Explore",
+      "started_at": "2026-03-26T13:53:47.956Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T13:54:36.733Z",
+      "duration_ms": 48777
+    },
+    {
+      "agent_id": "aca52e1a65f9e3f49",
+      "agent_type": "copywriter-godin",
+      "started_at": "2026-03-26T13:54:03.264Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T13:54:59.470Z",
+      "duration_ms": 56206
+    }
+  ],
+  "total_spawned": 2,
+  "total_completed": 2,
+  "total_failed": 0,
+  "last_updated": "2026-03-26T13:54:59.573Z"
+}

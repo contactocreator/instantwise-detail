@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"/Users/bag-yohan/Library/CloudStorage/OneDrive-wakawaka/디자인/01 CONTACTO/16 개발/ad-creative-saas/apps/web\\\" && node -e \\\"\\nconst XLSX = require('./node_modules/xlsx');\\n\\nconst data = [...",
+  "error": "Exit code 1\nnode:internal/modules/cjs/loader:1459\n  throw err;\n  ^\n\nError: Cannot find module './node_modules/xlsx'\nRequire stack:\n- /Users/bag-yohan/Library/CloudStorage/OneDrive-wakawaka/디자인/01 CONTACTO/16 개발/ad-creative-saas/apps/web/[eval]\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)\n    at Module._load (node:interna...",
+  "timestamp": "2026-03-26T13:58:39.064Z",
+  "retry_count": 2
+}

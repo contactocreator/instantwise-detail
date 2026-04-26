@@ -1,0 +1,54 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Contacto AI Outreach",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.js"],
+      "cwd": "contacto-onboarding",
+      "port": 3002,
+      "autoPort": true
+    },
+    {
+      "name": "vibe-design-tool",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "vibe-design-tool",
+      "port": 3000
+    },
+    {
+      "name": "contacto-onboarding",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.js"],
+      "cwd": "contacto-onboarding",
+      "port": 3002
+    },
+    {
+      "name": "contacto-onboarding-client",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "contacto-onboarding/client",
+      "port": 5173
+    },
+    {
+      "name": "ds-studio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "3003"],
+      "cwd": "ds-studio",
+      "port": 3003
+    },
+    {
+      "name": "mindmap",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "3400", "redness-mindmap"],
+      "port": 3400
+    },
+    {
+      "name": "gov-grants-radar",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["node_modules/.bin/vite", "--port", "3000"],
+      "cwd": "gov-grants-radar",
+      "port": 3000
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1773739166233,
+  "projectRoot": "/Users/bag-yohan/Library/CloudStorage/OneDrive-wakawaka/디자인/01 CONTACTO/16 개발",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "express",
+        "version": "4.18.2",
+        "category": "backend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "start": "node server.js",
+      "dev": "node --watch server.js"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "korean-doc-ai": {
+      "path": "korean-doc-ai",
+      "purpose": null,
+      "fileCount": 8,
+      "lastAccessed": 1773739166216,
+      "keyFiles": [
+        "index.html",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.electron.json",
+        "tsconfig.json"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 1,
+      "lastAccessed": 1773739166216,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "vibe-design-tool": {
+      "path": "vibe-design-tool",
+      "purpose": null,
+      "fileCount": 11,
+      "lastAccessed": 1773739166218,
+      "keyFiles": [
+        "README.md",
+        "eslint.config.mjs",
+        "next-env.d.ts",
+        "next.config.ts",
+        "package-lock.json"
+      ]
+    },
+    "korean-doc-ai/dist": {
+      "path": "korean-doc-ai/dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 1,
+      "lastAccessed": 1773739166219,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "korean-doc-ai/node_modules": {
+      "path": "korean-doc-ai/node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 1,
+      "lastAccessed": 1773739166220,
+      "keyFiles": []
+    },
+    "vibe-design-tool/app": {
+      "path": "vibe-design-tool/app",
+      "purpose": "Application code",
+      "fileCount": 4,
+      "lastAccessed": 1773739166221,
+      "keyFiles": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx"
+      ]
+    },
+    "vibe-design-tool/components": {
+      "path": "vibe-design-tool/components",
+      "purpose": "UI components",
+      "fileCount": 4,
+      "lastAccessed": 1773739166221,
+      "keyFiles": [
+        "EditorPanel.tsx",
+        "Header.tsx",
+        "InputPanel.tsx"
+      ]
+    },
+    "vibe-design-tool/lib": {
+      "path": "vibe-design-tool/lib",
+      "purpose": "Library code",
+      "fileCount": 3,
+      "lastAccessed": 1773739166222,
+      "keyFiles": [
+        "codeEditor.ts",
+        "extractFrames.ts",
+        "parseParams.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "instantwise-detail.html",
+      "accessCount": 8,
+      "lastAccessed": 1777196601392,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/app/page.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1773799638011,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/lib/parseParams.ts",
+      "accessCount": 3,
+      "lastAccessed": 1773799796886,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/components/EditorPanel.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1773757325508,
+      "type": "file"
+    },
+    {
+      "path": "server.js",
+      "accessCount": 2,
+      "lastAccessed": 1773821531234,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/app/api/edit-params/route.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773757246420,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/app/api/generate/route.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773799569174,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/components/InputPanel.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1773799576996,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/app/globals.css",
+      "accessCount": 1,
+      "lastAccessed": 1773799577232,
+      "type": "file"
+    },
+    {
+      "path": "vibe-design-tool/components/PreviewPanel.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1773799651187,
+      "type": "file"
+    },
+    {
+      "path": "public/index.html",
+      "accessCount": 1,
+      "lastAccessed": 1773821482924,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

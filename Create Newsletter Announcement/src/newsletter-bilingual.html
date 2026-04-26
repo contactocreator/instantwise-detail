@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light">
+  <title>Contacto Newsletter</title>
+  <style>
+    /* ─── Hidden radio inputs ─── */
+    #lang-ko, #lang-en {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ─── Default: KO visible, EN hidden ─── */
+    .en-only { display: none; }
+
+    /* ─── Lang toggle: when EN selected ─── */
+    #lang-en:checked ~ .email-wrap .en-only  { display: block !important; }
+    #lang-en:checked ~ .email-wrap .ko-only  { display: none  !important; }
+
+    /* ─── Lang toggle button states ─── */
+    label[for="lang-ko"] { background: #111; color: #fff; }
+    label[for="lang-en"] { background: #fff; color: #111; }
+    #lang-en:checked ~ .email-wrap label[for="lang-ko"] { background: #fff !important; color: #111 !important; }
+    #lang-en:checked ~ .email-wrap label[for="lang-en"] { background: #111 !important; color: #fff !important; }
+
+    /* ─── Dark mode: force light mode colors ─── */
+    @media (prefers-color-scheme: dark) {
+      body         { background-color: #f5f5f5 !important; color: #111 !important; }
+      .email-wrap  { background-color: #ffffff !important; color: #111 !important; }
+      .bg-orange   { background-color: #F9AF55 !important; color: #111 !important; }
+      .bg-beige    { background-color: #E8E4D8 !important; color: #111 !important; }
+      .bg-lime     { background-color: #C8D640 !important; color: #111 !important; }
+      .bg-blue     { background-color: #2EA7E0 !important; color: #111 !important; }
+      .text-dark   { color: #111 !important; }
+      .text-gray   { color: #333 !important; }
+      .text-muted  { color: #555 !important; }
+      .text-hint   { color: #888 !important; }
+      .border-dark { border-color: #111 !important; }
+      .band-border { border-top-color: #EA5514 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f5f5f5; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+  <!-- !! Radio inputs MUST be direct children of body, before .email-wrap !! -->
+  <input type="radio" id="lang-ko" name="lang" checked>
+  <input type="radio" id="lang-en" name="lang">
+
+  <div class="email-wrap" style="max-width:420px; margin:0 auto; background-color:#fff; border:1px solid #d1d5db; color:#111;">
+
+    <!-- ── HEADER ── -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="bg-orange" style="background-color:#F9AF55; border-bottom:9px solid #EA5514; padding:16px 20px;">
+      <tr>
+        <td width="28" align="left">
+          <svg width="28" height="39" viewBox="0 0 36 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <path d="M0 24.5952C0 9.91961 7.33964 0 18.9586 0C29.082 0 34.4494 7.13586 35.1298 16.4441H28.336C27.5209 9.98875 24.5989 5.23272 18.4819 5.23272C10.6001 5.23272 6.52453 12.7761 6.52453 24.5989C6.52453 36.4216 10.8039 44.5072 18.4819 44.5072C24.9373 44.5072 27.5864 40.2934 28.7436 33.2958H35.1298C34.0418 43.4884 28.7436 49.6708 18.6202 49.6708C6.7283 49.6708 0.00363967 39.955 0.00363967 24.5989L0 24.5952Z" fill="#111"/>
+          </svg>
+        </td>
+        <td align="center" style="padding:0 16px;">
+          <div style="height:3px; background-color:#111; width:100%;"></div>
+        </td>
+        <td width="29" align="right">
+          <svg width="29" height="38" viewBox="0 0 37 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <path d="M36.9456 9.47203H32.2078V7.10311C32.2078 5.68394 31.2617 4.73419 29.8389 4.73419H23.2088C21.7897 4.73419 20.8399 5.6803 20.8399 7.10311V40.257C20.8399 41.6762 21.786 42.6259 23.2088 42.6259H30.3119V47.3638H6.63004V42.6259H13.7332C15.156 42.6259 16.1021 41.6798 16.1021 40.257V7.10311C16.1021 5.68394 15.156 4.73419 13.7332 4.73419H7.10312C5.68031 4.73419 4.7342 5.6803 4.7342 7.10311V9.47203H0V0H36.942V9.47203H36.9456Z" fill="#111"/>
+          </svg>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ── LANG TOGGLE ── -->
+    <div class="bg-beige" style="background-color:#E8E4D8; padding:6px 16px 8px; text-align:right;">
+      <table cellpadding="0" cellspacing="0" border="0" align="right" style="border:2px solid #111;">
+        <tr>
+          <td>
+            <label for="lang-ko" style="display:block; font-size:11px; font-weight:bold; padding:4px 12px; cursor:pointer; letter-spacing:1px;">KO</label>
+          </td>
+          <td style="width:2px; background:#111;"></td>
+          <td>
+            <label for="lang-en" style="display:block; font-size:11px; font-weight:bold; padding:4px 12px; cursor:pointer; letter-spacing:1px;">EN</label>
+          </td>
+        </tr>
+      </table>
+      <div style="clear:both;"></div>
+    </div>
+
+    <!-- ── HERO ── -->
+    <div class="bg-beige" style="background-color:#E8E4D8; padding:16px 20px 40px;">
+      <div class="ko-only" style="font-size:11px; font-weight:bold; letter-spacing:3px; margin-bottom:8px;">
+        반갑습니다, 창작자 여러분
+      </div>
+      <div class="en-only" style="font-size:11px; font-weight:bold; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">
+        Welcome, Creators
+      </div>
+      <div style="font-size:46px; font-weight:bold; line-height:1; margin-bottom:16px; letter-spacing:-1px; text-transform:uppercase;">
+        CONTAC TO<br/>NEW UPDATES!
+      </div>
+      <div class="ko-only" style="font-size:15px; line-height:1.7; color:#333; word-break:keep-all;">
+        안녕하세요, 컨택토팀입니다.<br/>
+        아트인굿즈를 통해 컨택토에 함께하게 되신 여러분을 진심으로 환영합니다. 오늘은 두 가지 중요한 소식을 전해드립니다.
+      </div>
+      <div class="en-only" style="font-size:15px; line-height:1.7; color:#333;">
+        Hello, this is the Contacto team.<br/>
+        We sincerely welcome everyone who has joined Contacto through Art in Goods. We have two important updates to share today.
+      </div>
+    </div>
+
+    <!-- ── UPDATE BAND ── -->
+    <div class="bg-lime band-border" style="background-color:#C8D640; border-top:9px solid #EA5514; padding:10px 20px; font-size:13px; font-weight:bold; letter-spacing:2px; white-space:nowrap; overflow:hidden;">
+      — 2026 UPDATE —&nbsp;&nbsp;&nbsp;— 2026 UPDATE —&nbsp;&nbsp;&nbsp;— 2026 UPDATE —
+    </div>
+
+    <!-- ── SECTION 01 ── -->
+    <div class="bg-beige border-dark" style="background-color:#E8E4D8; border-bottom:3px solid #111; padding:24px 20px;">
+      <div style="font-size:11px; font-weight:bold; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">
+        01 / News Update
+      </div>
+
+      <!-- KO -->
+      <div class="ko-only">
+        <div style="font-size:30px; font-weight:bold; line-height:1.05; margin-bottom:16px; letter-spacing:-1px;">
+          브랜드사 &amp; 미술관<br/>공식 프로젝트<br/>시작됩니다
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#222; word-break:keep-all;">
+          <p style="margin:0 0 12px 0;">조만간 다양한 창작자 수요가 있는 브랜드사, 기업, 미술관들과 연결된 프로젝트들이 컨택토 안에서 선보일 예정입니다. 수익이 보장되고 포트폴리오로서의 가치도 있는 프로젝트들입니다.</p>
+          <p style="margin:0;">컨택토 내 <strong style="color:#111;">초록색 프로필 콜라보레이션</strong>을 통해 만나보실 수 있습니다. 번거로운 제안서 작성 없이 간편하게 신청하실 수 있습니다.</p>
+        </div>
+        <div class="bg-blue border-dark" style="background-color:#2EA7E0; border:1px solid #111; padding:16px; margin:16px 0; color:#111;">
+          <div style="font-size:11px; font-weight:bold; letter-spacing:3px; margin-bottom:8px;">⚠ 포트폴리오 업로드 안내</div>
+          <div style="font-size:13px; line-height:1.7; word-break:keep-all;">
+            4월부터 컨택토는 <strong>승인제로 전환</strong>됩니다. 승인제 시행 이후에는 포트폴리오가 없는 계정은 자동으로 탈퇴 처리될 예정입니다.<br/><br/>
+            승인제가 시작되기 전까지 포트폴리오를 업로드해 주시면 감사하겠습니다.
+          </div>
+        </div>
+        <div style="font-size:12px; color:#888; word-break:keep-all;">해당 기능은 현재 개발 중이며 4월 중 오픈 예정입니다.</div>
+      </div>
+
+      <!-- EN -->
+      <div class="en-only">
+        <div style="font-size:30px; font-weight:bold; line-height:1.05; margin-bottom:16px; letter-spacing:-1px; text-transform:uppercase;">
+          OFFICIAL PROJECTS<br/>WITH BRANDS &amp;<br/>MUSEUMS BEGIN
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#222;">
+          <p style="margin:0 0 12px 0;">Soon, projects connected with brands, companies, and museums that have diverse creator needs will be introduced within Contacto. These are projects with guaranteed income and real portfolio value.</p>
+          <p style="margin:0;">You can discover them through the <strong style="color:#111;">green profile collaboration</strong> within Contacto. Apply easily — no proposal writing required.</p>
+        </div>
+        <div class="bg-blue border-dark" style="background-color:#2EA7E0; border:1px solid #111; padding:16px; margin:16px 0; color:#111;">
+          <div style="font-size:11px; font-weight:bold; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">⚠ Portfolio Upload Notice</div>
+          <div style="font-size:13px; line-height:1.7;">
+            Starting in April, Contacto will switch to an <strong>approval-based system</strong>. After implementation, accounts without a portfolio will be automatically deactivated.<br/><br/>
+            Please upload your portfolio before the approval system goes live.
+          </div>
+        </div>
+        <div style="font-size:12px; color:#888;">This feature is currently in development and will launch in April.</div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 02 ── -->
+    <div class="bg-beige" style="background-color:#E8E4D8; padding:24px 20px 0;">
+      <div style="font-size:11px; font-weight:bold; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">
+        02 / Update
+      </div>
+
+      <!-- KO -->
+      <div class="ko-only">
+        <div style="font-size:30px; font-weight:bold; line-height:1.05; margin-bottom:16px; letter-spacing:-1px;">
+          콜라보레이션<br/>기능이<br/>업데이트됐습니다
+        </div>
+        <div style="margin:14px 0;">
+          <span style="font-size:11px; font-weight:bold; letter-spacing:2px; border:2px solid #111; padding:4px 10px; background-color:#E8E4D8; display:inline-block; margin:0 4px 4px 0;">팀원 모집</span>
+          <span style="font-size:11px; font-weight:bold; letter-spacing:2px; border:2px solid #111; padding:4px 10px; background-color:#E8E4D8; display:inline-block; margin:0 4px 4px 0;">팝업 동료</span>
+          <span style="font-size:11px; font-weight:bold; letter-spacing:2px; border:2px solid #111; padding:4px 10px; background-color:#E8E4D8; display:inline-block; margin-bottom:4px;">스와이프 지원</span>
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#222; word-break:keep-all; margin-top:16px; margin-bottom:24px;">
+          <p style="margin:0 0 12px 0;">기존 1:1 매칭 방식의 불편함을 개선하여, 이제 하나의 주제 아래 여러 구성원을 모을 수 있는 <strong>콜렉티브 빌드 기능</strong>이 추가되었습니다.</p>
+          <p style="margin:0 0 12px 0;">앱 하단 가운데 버튼을 눌러 콜렉티브 프로필을 만들고 홈피드에 업로드할 수 있습니다.</p>
+          <p style="margin:0;">홈피드에서 마음에 드는 콜라보레이션을 발견하면, <strong>스와이프 한 번으로 바로 지원</strong>할 수 있습니다.</p>
+        </div>
+      </div>
+
+      <!-- EN -->
+      <div class="en-only">
+        <div style="font-size:30px; font-weight:bold; line-height:1.05; margin-bottom:16px; letter-spacing:-1px; text-transform:uppercase;">
+          COLLABORATION<br/>FEATURE<br/>UPDATED
+        </div>
+        <div style="margin:14px 0;">
+          <span style="font-size:11px; font-weight:bold; letter-spacing:2px; border:2px solid #111; padding:4px 10px; background-color:#E8E4D8; display:inline-block; margin:0 4px 4px 0; text-transform:uppercase;">Team Recruitment</span>
+          <span style="font-size:11px; font-weight:bold; letter-spacing:2px; border:2px solid #111; padding:4px 10px; background-color:#E8E4D8; display:inline-block; margin:0 4px 4px 0; text-transform:uppercase;">Popup Partner</span>
+          <span style="font-size:11px; font-weight:bold; letter-spacing:2px; border:2px solid #111; padding:4px 10px; background-color:#E8E4D8; display:inline-block; margin-bottom:4px; text-transform:uppercase;">Swipe to Apply</span>
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#222; margin-top:16px; margin-bottom:24px;">
+          <p style="margin:0 0 12px 0;">Improving on the 1:1 matching method, a <strong>Collective Build feature</strong> has been added — gather multiple members under a single theme.</p>
+          <p style="margin:0 0 12px 0;">Tap the center button at the bottom of the app to create a collective profile and post it to the home feed.</p>
+          <p style="margin:0;">When you find a collaboration you like on the home feed, <strong>apply instantly with a single swipe</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── IMAGE GIF ── -->
+    <!-- [TODO] Notion에 carousel-ko.gif / carousel-en.gif 업로드 후 아래 URL 교체 -->
+    <div class="bg-beige" style="background-color:#E8E4D8; padding:8px 0 40px; text-align:center;">
+      <div class="ko-only">
+        <img src="https://raw.githubusercontent.com/contactocreator/contacto-assets/main/carousel-ko.gif" alt="콜렉티브 빌드" width="378" style="max-width:90%; height:auto; border:1px solid #111; display:block; margin:0 auto;" />
+      </div>
+      <div class="en-only">
+        <img src="https://raw.githubusercontent.com/contactocreator/contacto-assets/main/carousel-en.gif" alt="Collective Build" width="378" style="max-width:90%; height:auto; border:1px solid #111; display:block; margin:0 auto;" />
+      </div>
+    </div>
+
+    <!-- ── CTA ── -->
+    <div class="bg-lime band-border" style="background-color:#C8D640; border-top:9px solid #EA5514; padding:28px 20px;">
+      <!-- KO -->
+      <div class="ko-only">
+        <div style="font-size:34px; font-weight:bold; line-height:1; margin-bottom:12px; letter-spacing:-1px;">
+          지금 포트폴리오를<br/>업로드하세요
+        </div>
+        <div style="font-size:14px; line-height:1.7; color:#333; margin-bottom:20px; word-break:keep-all;">
+          4월 승인제 전환 전까지 포트폴리오를 등록하셔야 컨택토 안에서 계속 활동하실 수 있습니다.
+        </div>
+        <a href="https://contacto.page.link/open" style="display:inline-block; font-size:13px; font-weight:bold; letter-spacing:2px; background-color:#111; color:#C8D640; padding:12px 24px; border:3px solid #111; text-decoration:none;">
+          포트폴리오 업로드 →
+        </a>
+      </div>
+      <!-- EN -->
+      <div class="en-only">
+        <div style="font-size:34px; font-weight:bold; line-height:1; margin-bottom:12px; letter-spacing:-1px; text-transform:uppercase;">
+          UPLOAD YOUR<br/>PORTFOLIO NOW
+        </div>
+        <div style="font-size:14px; line-height:1.7; color:#333; margin-bottom:20px;">
+          Register your portfolio before the April approval transition to continue your activity on Contacto.
+        </div>
+        <a href="https://contacto.page.link/open" style="display:inline-block; font-size:13px; font-weight:bold; letter-spacing:2px; background-color:#111; color:#C8D640; padding:12px 24px; border:3px solid #111; text-decoration:none; text-transform:uppercase;">
+          Upload Portfolio →
+        </a>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <div class="bg-beige" style="background-color:#E8E4D8; padding:20px;">
+      <div style="font-size:22px; font-weight:bold; color:#111; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">
+        CONTACTO
+      </div>
+      <div class="ko-only" style="font-size:12px; line-height:1.7; color:#555; word-break:keep-all;">
+        앞으로도 컨택토는 창작자 여러분의 연결과 성장을 위해<br/>계속 업데이트해 나가겠습니다.<br/>
+        컨택토팀 드림
+      </div>
+      <div class="en-only" style="font-size:12px; line-height:1.7; color:#555;">
+        Contacto will keep updating to support the connection and growth of all creators.<br/>
+        Sincerely, the Contacto Team
+      </div>
+    </div>
+
+  </div><!-- /.email-wrap -->
+</body>
+</html>

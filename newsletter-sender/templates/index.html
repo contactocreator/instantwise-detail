@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto Newsletter Sender</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      color: #111;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #F9AF55;
+      border-bottom: 6px solid #EA5514;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 {
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d1d5db;
+      padding: 24px;
+    }
+    .card h2 {
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: #888;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      border: 2px solid #111;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 16px;
+      background: #fff;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #EA5514;
+    }
+
+    .file-upload {
+      border: 2px dashed #d1d5db;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .file-upload:hover { border-color: #111; }
+    .file-upload.has-file { border-color: #C8D640; background: #f9fbe7; border-style: solid; }
+    .file-upload input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .file-upload .label { font-size: 13px; color: #555; }
+    .file-upload .filename { font-size: 13px; font-weight: bold; color: #111; margin-top: 4px; }
+
+    .btn {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border: 3px solid #111;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-primary { background: #111; color: #C8D640; }
+    .btn-primary:hover { background: #333; }
+    .btn-orange { background: #EA5514; color: #fff; border-color: #EA5514; width: 100%; text-align: center; }
+    .btn-orange:hover { background: #d44910; }
+    .btn-outline { background: #fff; color: #111; }
+    .btn-outline:hover { background: #f5f5f5; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Preview panel — spans full width */
+    .preview-panel {
+      grid-column: 1 / -1;
+      background: #fff;
+      border: 1px solid #d1d5db;
+      display: none;
+    }
+    .preview-panel.visible { display: block; }
+    .preview-tabs {
+      display: flex;
+      border-bottom: 3px solid #111;
+    }
+    .tab-btn {
+      padding: 12px 20px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-right: 1px solid #d1d5db;
+      color: #888;
+    }
+    .tab-btn.active { background: #111; color: #C8D640; }
+    .tab-content { display: none; padding: 20px; }
+    .tab-content.active { display: block; }
+
+    .email-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .email-tag {
+      font-size: 12px;
+      background: #E8E4D8;
+      border: 1px solid #d1d5db;
+      padding: 4px 10px;
+    }
+    .email-tag.sent { background: #C8D640; border-color: #9aac00; }
+    .email-tag.error { background: #fde8e8; border-color: #f87171; }
+
+    iframe#html-preview {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    .send-bar {
+      grid-column: 1 / -1;
+      background: #C8D640;
+      border: 1px solid #d1d5db;
+      border-top: 9px solid #EA5514;
+      padding: 20px 24px;
+      display: none;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .send-bar.visible { display: flex; }
+    .send-bar .count {
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .send-bar .spacer { flex: 1; }
+
+    .progress-bar-wrap {
+      grid-column: 1 / -1;
+      display: none;
+    }
+    .progress-bar-wrap.visible { display: block; }
+    .progress-bar-bg {
+      background: #d1d5db;
+      height: 6px;
+    }
+    .progress-bar-fill {
+      background: #EA5514;
+      height: 6px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .result-summary {
+      grid-column: 1 / -1;
+      padding: 16px 24px;
+      font-size: 13px;
+      font-weight: bold;
+      display: none;
+    }
+    .result-summary.visible { display: block; }
+    .result-summary.success { background: #C8D640; }
+    .result-summary.partial { background: #fef3c7; }
+
+    .hint {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .hint a { color: #EA5514; }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="18" height="25" viewBox="0 0 36 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 24.5952C0 9.91961 7.33964 0 18.9586 0C29.082 0 34.4494 7.13586 35.1298 16.4441H28.336C27.5209 9.98875 24.5989 5.23272 18.4819 5.23272C10.6001 5.23272 6.52453 12.7761 6.52453 24.5989C6.52453 36.4216 10.8039 44.5072 18.4819 44.5072C24.9373 44.5072 27.5864 40.2934 28.7436 33.2958H35.1298C34.0418 43.4884 28.7436 49.6708 18.6202 49.6708C6.7283 49.6708 0.00363967 39.955 0.00363967 24.5989L0 24.5952Z" fill="#111"/>
+  </svg>
+  <h1>Newsletter Sender</h1>
+</header>
+
+<div class="container">
+
+  <!-- Gmail 설정 -->
+  <div class="card">
+    <h2>Gmail 설정</h2>
+    <label>Gmail 주소</label>
+    <input type="email" id="gmail" placeholder="you@gmail.com" value="{{ saved_gmail }}" />
+    <label>앱 비밀번호</label>
+    <input type="password" id="password" placeholder="xxxx xxxx xxxx xxxx" value="{{ saved_password }}" />
+    <p class="hint">
+      일반 비밀번호가 아닌 <strong>앱 비밀번호</strong>가 필요합니다.<br/>
+      Google 계정 → 보안 → 2단계 인증 → 앱 비밀번호에서 생성하세요.
+    </p>
+
+    <div style="margin-top:20px;">
+      <label>이메일 제목</label>
+      <input type="text" id="subject" placeholder="컨택토 뉴스레터 — 2026 업데이트" />
+    </div>
+
+    <div style="margin-top:4px;">
+      <label>서버 URL <span style="font-weight:normal; color:#888;">(수신거부 링크용)</span></label>
+      <input type="text" id="server_url" placeholder="http://localhost:5050" value="http://localhost:5050" />
+      <p class="hint">외부에서 수신거부를 받으려면 ngrok 등으로 터널링 후 해당 URL을 입력하세요.</p>
+    </div>
+  </div>
+
+  <!-- 파일 업로드 -->
+  <div class="card">
+    <h2>파일 업로드</h2>
+    <label>이메일 리스트 (CSV)</label>
+    <div class="file-upload" id="csv-drop">
+      <input type="file" id="csv-file" accept=".csv" />
+      <div class="label">CSV 파일을 드래그하거나 클릭하여 업로드</div>
+      <div class="filename" id="csv-name"></div>
+    </div>
+    <p class="hint" style="margin-bottom:16px;">
+      <code>email</code> 컬럼이 있는 CSV 또는 이메일 주소만 있는 CSV를 지원합니다.
+    </p>
+
+    <label>뉴스레터 HTML</label>
+    <div class="file-upload" id="html-drop">
+      <input type="file" id="html-file" accept=".html,.htm" />
+      <div class="label">HTML 파일을 드래그하거나 클릭하여 업로드</div>
+      <div class="filename" id="html-name"></div>
+    </div>
+
+    <button class="btn btn-primary" id="preview-btn" onclick="loadPreview()" style="width:100%; text-align:center;" disabled>
+      미리보기 불러오기
+    </button>
+  </div>
+
+  <!-- 미리보기 패널 -->
+  <div class="preview-panel" id="preview-panel">
+    <div class="preview-tabs">
+      <button class="tab-btn active" onclick="switchTab('emails')">수신자 목록</button>
+      <button class="tab-btn" onclick="switchTab('html')">HTML 미리보기</button>
+    </div>
+    <div class="tab-content active" id="tab-emails">
+      <div id="email-count" style="font-size:13px; margin-bottom:12px; color:#555;"></div>
+      <div class="email-list" id="email-list"></div>
+    </div>
+    <div class="tab-content" id="tab-html">
+      <iframe id="html-preview"></iframe>
+    </div>
+  </div>
+
+  <!-- 발송 바 -->
+  <div class="send-bar" id="send-bar">
+    <div>
+      <div class="count" id="send-count"></div>
+      <div style="font-size:11px; color:#555; margin-top:2px;">개의 이메일을 발송합니다</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn btn-primary" id="send-btn" onclick="sendEmails()">발송하기</button>
+  </div>
+
+  <!-- 진행 바 -->
+  <div class="progress-bar-wrap" id="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+  </div>
+
+  <!-- 결과 -->
+  <div class="result-summary" id="result-summary"></div>
+
+  <!-- 수신거부 관리 -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <h2>수신거부 관리</h2>
+    <div style="display:flex; gap:8px; margin-bottom:16px;">
+      <input type="email" id="unsub-input" placeholder="추가할 이메일" style="flex:1; margin-bottom:0;" />
+      <button class="btn btn-primary" onclick="unsubAdd()" style="white-space:nowrap;">추가</button>
+    </div>
+    <div id="unsub-list" style="display:flex; flex-wrap:wrap; gap:8px; min-height:32px;"></div>
+    <div id="unsub-empty" style="font-size:13px; color:#aaa; display:none;">수신거부 목록이 비어 있습니다.</div>
+  </div>
+
+</div>
+
+<script>
+  let previewData = null;
+
+  // ── Unsubscribe management ────────────────────────────────────────────────
+
+  async function loadUnsubList() {
+    const res = await fetch('/unsubscribe-list');
+    const data = await res.json();
+    renderUnsubList(data.emails || []);
+  }
+
+  function renderUnsubList(emails) {
+    const container = document.getElementById('unsub-list');
+    const empty = document.getElementById('unsub-empty');
+    container.innerHTML = '';
+    if (!emails.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    emails.forEach(e => {
+      const wrap = document.createElement('span');
+      wrap.style.cssText = 'display:inline-flex;align-items:center;gap:6px;background:#fde8e8;border:1px solid #f87171;padding:4px 10px;font-size:12px;';
+      wrap.innerHTML = `${e} <button onclick="unsubRemove('${e}')" style="background:none;border:none;cursor:pointer;font-size:14px;color:#dc2626;line-height:1;">×</button>`;
+      container.appendChild(wrap);
+    });
+  }
+
+  async function unsubAdd() {
+    const email = document.getElementById('unsub-input').value.trim();
+    if (!email) return;
+    const res = await fetch('/unsubscribe-add', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
+    const data = await res.json();
+    if (data.error) { alert(data.error); return; }
+    document.getElementById('unsub-input').value = '';
+    renderUnsubList(data.emails);
+  }
+
+  async function unsubRemove(email) {
+    const res = await fetch('/unsubscribe-remove', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
+    const data = await res.json();
+    renderUnsubList(data.emails);
+  }
+
+  loadUnsubList();
+
+  // File input feedback
+  document.getElementById('csv-file').addEventListener('change', function() {
+    const name = this.files[0]?.name;
+    document.getElementById('csv-name').textContent = name || '';
+    document.getElementById('csv-drop').classList.toggle('has-file', !!name);
+    checkReady();
+  });
+  document.getElementById('html-file').addEventListener('change', function() {
+    const name = this.files[0]?.name;
+    document.getElementById('html-name').textContent = name || '';
+    document.getElementById('html-drop').classList.toggle('has-file', !!name);
+    checkReady();
+  });
+
+  function checkReady() {
+    const ready = document.getElementById('csv-file').files.length > 0
+               && document.getElementById('html-file').files.length > 0;
+    document.getElementById('preview-btn').disabled = !ready;
+  }
+
+  async function loadPreview() {
+    const btn = document.getElementById('preview-btn');
+    btn.disabled = true;
+    btn.textContent = '불러오는 중...';
+
+    const form = new FormData();
+    form.append('csv_file', document.getElementById('csv-file').files[0]);
+    form.append('html_file', document.getElementById('html-file').files[0]);
+
+    const res = await fetch('/preview', { method: 'POST', body: form });
+    const data = await res.json();
+
+    btn.textContent = '미리보기 불러오기';
+    btn.disabled = false;
+
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
+
+    previewData = data;
+
+    // Show email list
+    const list = document.getElementById('email-list');
+    list.innerHTML = '';
+    data.emails.forEach(e => {
+      const tag = document.createElement('span');
+      tag.className = 'email-tag';
+      tag.textContent = e;
+      tag.id = 'tag-' + e.replace(/[@.]/g, '-');
+      list.appendChild(tag);
+    });
+    const skippedMsg = data.skipped > 0 ? ` (수신거부 ${data.skipped}명 제외)` : '';
+    document.getElementById('email-count').textContent = `총 ${data.count}명${skippedMsg}`;
+
+    // Show HTML preview
+    const iframe = document.getElementById('html-preview');
+    iframe.srcdoc = data.html_content;
+
+    document.getElementById('preview-panel').classList.add('visible');
+    document.getElementById('send-count').textContent = data.count;
+    document.getElementById('send-bar').classList.add('visible');
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && name === 'emails') || (i === 1 && name === 'html'));
+    });
+    document.getElementById('tab-emails').classList.toggle('active', name === 'emails');
+    document.getElementById('tab-html').classList.toggle('active', name === 'html');
+  }
+
+  async function sendEmails() {
+    const gmail = document.getElementById('gmail').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+
+    if (!gmail || !password || !subject) {
+      alert('Gmail 주소, 앱 비밀번호, 이메일 제목을 모두 입력해주세요.');
+      return;
+    }
+    if (!previewData) return;
+
+    const sendBtn = document.getElementById('send-btn');
+    sendBtn.disabled = true;
+    sendBtn.textContent = '발송 중...';
+
+    document.getElementById('progress-wrap').classList.add('visible');
+
+    const server_url = document.getElementById('server_url').value.trim() || 'http://localhost:5050';
+
+    const res = await fetch('/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        gmail,
+        password,
+        subject,
+        emails: previewData.emails,
+        html_content: previewData.html_content,
+        server_url,
+      }),
+    });
+
+    const data = await res.json();
+    document.getElementById('progress-fill').style.width = '100%';
+
+    if (data.error) {
+      alert(data.error);
+      sendBtn.disabled = false;
+      sendBtn.textContent = '발송하기';
+      return;
+    }
+
+    // Update tags
+    const results = data.results || [];
+    let successCount = 0;
+    results.forEach(r => {
+      const tag = document.getElementById('tag-' + r.email.replace(/[@.]/g, '-'));
+      if (tag) tag.classList.add(r.status === 'success' ? 'sent' : 'error');
+      if (r.status === 'success') successCount++;
+    });
+
+    // Show summary
+    const summary = document.getElementById('result-summary');
+    const failCount = results.length - successCount;
+    summary.classList.add('visible', failCount > 0 ? 'partial' : 'success');
+    summary.textContent = failCount > 0
+      ? `발송 완료: ${successCount}건 성공, ${failCount}건 실패`
+      : `${successCount}건 모두 성공적으로 발송됐습니다.`;
+
+    sendBtn.textContent = '발송 완료';
+    switchTab('emails');
+  }
+</script>
+</body>
+</html>
