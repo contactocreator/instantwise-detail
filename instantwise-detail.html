@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Instantwise — Ceramic</title>
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF8F4;
+    --clay: #C4956A;
+    --terracotta: #B5603A;
+    --sage: #7A8C72;
+    --charcoal: #2C2C2A;
+    --muted: #9A9690;
+    --glaze-1: #D4C4A8;
+    --glaze-2: #8FA68A;
+    --glaze-3: #C4956A;
+    --glaze-4: #7B8FA0;
+    --active-glaze: var(--glaze-1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--charcoal);
+    font-family: 'Georgia', serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: rgba(250, 248, 244, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .nav-icon {
+    width: 20px; height: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  /* ── HERO SECTION ── */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px;
+  }
+
+  .product-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 배경 그라디언트 - 터치 위치에 반응 */
+  .stage-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 70% at 50% 50%, var(--cream) 0%, var(--warm-white) 100%);
+    transition: background 0.6s ease;
+  }
+
+  /* 3D 틸트 카드 */
+  .tilt-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    perspective: 800px;
+    cursor: grab;
+    z-index: 2;
+    touch-action: none;
+  }
+
+  .tilt-container:active { cursor: grabbing; }
+
+  .tilt-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(0deg) rotateY(0deg);
+    transition: transform 0.1s ease-out;
+    border-radius: 50%;
+    will-change: transform;
+  }
+
+  /* 세라믹 베이스 */
+  .ceramic-body {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #000;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.35),
+      0 8px 24px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+
+  /* 세라믹 텍스처 레이어 */
+  .ceramic-texture {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255,255,255,0.03) 3px,
+        rgba(255,255,255,0.03) 4px
+      );
+    mix-blend-mode: overlay;
+  }
+
+  /* 스페큘러 하이라이트 - 금속용 */
+  .specular-main {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse 50% 40% at 50% 50%,
+      rgba(255,255,255,0.55) 0%,
+      rgba(255,255,255,0.2) 35%,
+      rgba(255,255,255,0.03) 60%,
+      transparent 80%
+    );
+    width: 65%;
+    height: 55%;
+    top: 8%;
+    left: 17%;
+    transition: all 0.08s ease-out;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  /* 보조 하이라이트 - 금속 날카로운 반사 */
+  .specular-sharp {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,0.6) 20%,
+      rgba(255,255,255,0.1) 45%,
+      transparent 65%
+    );
+    width: 22%;
+    height: 18%;
+    top: 14%;
+    left: 22%;
+    transition: all 0.06s ease-out;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  /* 엣지 림 라이트 */
+  .rim-light {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse 100% 100% at 80% 85%,
+      rgba(255,220,180,0.35) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+  }
+
+  /* 반사 하단 */
+  .reflection {
+    position: absolute;
+    bottom: -10%;
+    left: 10%;
+    width: 80%;
+    height: 30%;
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(0,0,0,0.12) 0%,
+      transparent 80%
+    );
+    filter: blur(8px);
+    pointer-events: none;
+  }
+
+  /* 도자기 라인 디테일 (던진 흙 결) */
+  .ceramic-rings {
+    position: absolute;
+    inset: 10%;
+    border-radius: 50%;
+    background:
+      repeating-radial-gradient(
+        circle at 50% 52%,
+        transparent 0px,
+        transparent 18px,
+        rgba(0,0,0,0.025) 19px,
+        transparent 20px
+      );
+    mix-blend-mode: multiply;
+  }
+
+  /* 제품 레이블 (세라믹 위) */
+  .product-label {
+    position: absolute;
+    bottom: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(44, 44, 42, 0.45);
+    font-family: 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* 인터랙션 힌트 */
+  .drag-hint {
+    position: absolute;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+    opacity: 1;
+    transition: opacity 0.4s;
+    white-space: nowrap;
+  }
+
+  .drag-hint.hidden { opacity: 0; }
+
+  /* 플로팅 파티클 */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--clay);
+    opacity: 0;
+    animation: float-particle 4s ease-in-out infinite;
+  }
+
+  @keyframes float-particle {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.15; }
+    100% { transform: translateY(-80px) scale(0.3); opacity: 0; }
+  }
+
+  /* ── 제품 정보 ── */
+  .product-info {
+    padding: 28px 24px 0;
+  }
+
+  .product-category {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 8px;
+  }
+
+  .product-name {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .product-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .product-price {
+    font-size: 22px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    color: var(--charcoal);
+    letter-spacing: -0.02em;
+  }
+
+  /* ── 글레이즈 컬러 선택 ── */
+  .section {
+    padding: 28px 24px 0;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .glaze-name {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .glaze-options {
+    display: flex;
+    gap: 12px;
+  }
+
+  .glaze-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .glaze-swatch::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .glaze-swatch.active::after {
+    border-color: var(--charcoal);
+  }
+
+  .glaze-swatch:active { transform: scale(0.88); }
+
+  .glaze-swatch[data-glaze="sand"] { background: radial-gradient(ellipse at 35% 30%, #EDE0C4, #C4B08A); }
+  .glaze-swatch[data-glaze="sage"] { background: radial-gradient(ellipse at 35% 30%, #A8BCA0, #6A8A62); }
+  .glaze-swatch[data-glaze="clay"] { background: radial-gradient(ellipse at 35% 30%, #D4956A, #A06040); }
+  .glaze-swatch[data-glaze="slate"] { background: radial-gradient(ellipse at 35% 30%, #9BB0C4, #5A7A92); }
+
+  /* ── 사이즈 선택 ── */
+  .size-options {
+    display: flex;
+    gap: 10px;
+  }
+
+  .size-btn {
+    flex: 1;
+    padding: 14px 0;
+    border: 1px solid #E0DCD4;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--charcoal);
+    font-family: 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .size-btn.active {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    border-color: var(--charcoal);
+  }
+
+  .size-btn:active { transform: scale(0.96); }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 28px 24px 40px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .btn-cart {
+    flex: 1;
+    padding: 18px;
+    background: var(--charcoal);
+    color: var(--warm-white);
+    border: none;
+    border-radius: 12px;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-cart::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.15s;
+  }
+
+  .btn-cart:active::after { background: rgba(255,255,255,0.1); }
+  .btn-cart:active { transform: scale(0.97); }
+
+  .btn-wish {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #E0DCD4;
+    background: transparent;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-wish:active { transform: scale(0.9); background: #F5F0E8; }
+
+  .btn-wish svg { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .btn-wish.liked svg { transform: scale(1.2); fill: #C4956A; stroke: #C4956A; }
+
+  /* ── 디테일 섹션 ── */
+  .detail-section {
+    padding: 0 24px 40px;
+    border-top: 1px solid #E8E4DC;
+    margin: 0 24px;
+  }
+
+  .detail-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #E8E4DC;
+  }
+
+  .detail-toggle-label {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: var(--charcoal);
+  }
+
+  .detail-toggle-icon {
+    width: 20px; height: 20px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+
+  .detail-toggle-icon::before,
+  .detail-toggle-icon::after {
+    content: '';
+    position: absolute;
+    background: var(--charcoal);
+    border-radius: 1px;
+  }
+
+  .detail-toggle-icon::before { width: 12px; height: 1px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+  .detail-toggle-icon::after { width: 1px; height: 12px; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.3s; }
+
+  .detail-toggle.open .detail-toggle-icon::after { opacity: 0; }
+
+  .detail-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .detail-content.open { max-height: 200px; }
+
+  .detail-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    padding: 16px 0;
+  }
+
+  /* ── 컬러 변환 오버레이 ── */
+  @keyframes glaze-ripple {
+    0% { transform: scale(0); opacity: 0.6; }
+    100% { transform: scale(4); opacity: 0; }
+  }
+
+  .glaze-ripple-el {
+    position: absolute;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: currentColor;
+    pointer-events: none;
+    animation: glaze-ripple 0.6s ease-out forwards;
+    z-index: 10;
+    mix-blend-mode: overlay;
+  }
+
+  /* ── 스크롤 섹션 ── */
+  .craft-section {
+    padding: 60px 24px;
+    background: var(--charcoal);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .craft-section::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -20px; right: -20px;
+    height: 80px;
+    background: var(--charcoal);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  .craft-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--clay);
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 20px;
+  }
+
+  .craft-title {
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: var(--cream);
+  }
+
+  .craft-text {
+    font-size: 14px;
+    line-height: 1.9;
+    color: rgba(245, 240, 232, 0.65);
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 32px;
+  }
+
+  .craft-steps {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+
+  .craft-steps::-webkit-scrollbar { display: none; }
+
+  .craft-step {
+    flex-shrink: 0;
+    width: 140px;
+  }
+
+  .step-num {
+    font-size: 36px;
+    font-family: 'Georgia', serif;
+    color: rgba(196, 149, 106, 0.3);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .step-label {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--cream);
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    font-size: 11px;
+    color: rgba(245, 240, 232, 0.5);
+    font-family: 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* ── 상세 이미지 ── */
+  .product-detail-imgs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .product-detail-imgs img {
+    width: 100%;
+    display: block;
+  }
+
+  /* ── UGC 갤러리 ── */
+  .ugc-section {
+    padding: 48px 0 0;
+    overflow: hidden;
+  }
+
+  .ugc-header {
+    padding: 0 24px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .ugc-title {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .ugc-hashtag {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--clay);
+    font-family: 'Helvetica Neue', sans-serif;
+    text-decoration: none;
+  }
+
+  /* 슬라이더 트랙 */
+  .ugc-slider {
+    display: flex;
+    gap: 12px;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 24px 32px;
+    cursor: grab;
+  }
+
+  .ugc-slider::-webkit-scrollbar { display: none; }
+  .ugc-slider.dragging { cursor: grabbing; scroll-snap-type: none; }
+
+  /* 카드 */
+  .ugc-card {
+    flex-shrink: 0;
+    width: calc(100vw - 72px); /* 양쪽 peek */
+    max-width: 320px;
+    scroll-snap-align: center;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: var(--cream);
+    transform: scale(0.93);
+    transform-origin: center center;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    will-change: transform;
+  }
+
+  .ugc-card.active {
+    transform: scale(1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.16);
+  }
+
+  /* 이미지 영역 */
+  .ugc-img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+    position: relative;
+  }
+
+  /* 색상 플레이스홀더 (실제 이미지 대신) */
+  .ugc-img-placeholder {
+    width: 100%;
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 카드 오버레이 */
+  .ugc-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 48px 16px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+  }
+
+  .ugc-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .ugc-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: white;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .ugc-username {
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .ugc-caption {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+  }
+
+  /* 좋아요 버튼 */
+  .ugc-like {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.2s;
+  }
+
+  .ugc-like:active { transform: scale(0.85); }
+  .ugc-like.liked { background: rgba(196, 149, 106, 0.85); }
+  .ugc-like.liked svg { fill: white; stroke: white; }
+
+  /* 슬라이더 도트 인디케이터 */
+  .ugc-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 0 40px;
+  }
+
+  .ugc-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #D8D4CC;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ugc-dot.active {
+    width: 20px;
+    border-radius: 3px;
+    background: var(--charcoal);
+  }
+
+  /* 리뷰 */
+  .review-section {
+    padding: 48px 24px 60px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  .review-card {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+
+  .review-stars {
+    color: var(--clay);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--charcoal);
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 12px;
+  }
+
+  .review-author {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+  }
+
+  /* ── 인터랙션 시 틸트 수치 표시 (디버그 아님, 디자인 디테일) ── */
+  .tilt-indicator {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', sans-serif;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  .tilt-indicator.visible { opacity: 1; }
+
+  /* ── 글레이즈 색상 전환 시 배경 변화 ── */
+  body.glaze-sand { --stage-tint: rgba(212, 196, 168, 0.15); }
+  body.glaze-sage { --stage-tint: rgba(106, 138, 98, 0.12); }
+  body.glaze-clay { --stage-tint: rgba(160, 96, 64, 0.12); }
+  body.glaze-slate { --stage-tint: rgba(90, 122, 146, 0.12); }
+</style>
+</head>
+<body class="glaze-sand">
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="product-stage" id="stage">
+    <div class="stage-bg" id="stageBg"></div>
+
+    <!-- 파티클 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 틸트 컨테이너 -->
+    <div class="tilt-container" id="tiltContainer">
+      <div class="tilt-card" id="tiltCard">
+        <div class="ceramic-body" id="ceramicBody">
+          <img src="product-images/main.jpg.png" alt="product" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">
+          <div class="specular-main" id="specMain"></div>
+          <div class="specular-sharp" id="specSharp"></div>
+          <div class="rim-light"></div>
+        </div>
+        <div class="reflection"></div>
+      </div>
+      <div class="drag-hint" id="dragHint">drag to tilt</div>
+    </div>
+
+    <div class="tilt-indicator" id="tiltIndicator">touching</div>
+  </div>
+
+
+</section>
+
+
+<!-- 상세 이미지 -->
+<section class="product-detail-imgs">
+  <img src="product-images/1.jpg" alt="1">
+  <img src="product-images/2.jpg" alt="2">
+  <img src="product-images/3.jpg" alt="3">
+  <img src="product-images/4.jpg" alt="4">
+  <img src="product-images/5.jpg" alt="5">
+  <img src="product-images/6.jpg" alt="6">
+  <img src="product-images/7.jpg" alt="7">
+  <img src="product-images/8.jpg" alt="8">
+  <img src="product-images/9.jpg" alt="9">
+  <img src="product-images/10.jpg" alt="10">
+</section>
+
+<!-- 디테일 아코디언 -->
+<div style="margin: 0 0 0 0;">
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-top: 1px solid #E8E4DC;">
+    <span class="detail-toggle-label">Material & Care</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">고화도 석기토를 사용하여 물레성형 후 1280°C에서 소성합니다. 자연 재유약은 매번 다른 표정을 만들어냅니다. 식기세척기 사용 가능, 전자레인지 사용 불가.</div>
+  </div>
+
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px;">
+    <span class="detail-toggle-label">Shipping & Returns</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">주문 후 3–5일 내 발송. 수제품 특성상 교환·환불은 파손 제품에 한합니다. 각 제품은 고유한 유약 패턴을 가집니다.</div>
+  </div>
+
+  <div class="detail-toggle" onclick="toggleDetail(this)" style="margin: 0 24px; border-bottom: 1px solid #E8E4DC;">
+    <span class="detail-toggle-label">About the Maker</span>
+    <div class="detail-toggle-icon"></div>
+  </div>
+  <div class="detail-content">
+    <div class="detail-text" style="padding: 16px 24px;">Instantwise는 서울을 기반으로 한 도예 스튜디오입니다. 매 작품을 도예가가 직접 성형하며, 소량 생산으로 품질을 관리합니다.</div>
+  </div>
+</div>
+
+<!-- 제작 과정 -->
+<section class="craft-section">
+  <div class="craft-label">How it's made</div>
+  <h2 class="craft-title">흙에서 식탁까지,<br>손의 기억</h2>
+  <p class="craft-text">물레 위에서 회전하는 흙 한 덩이가 도예가의 손을 통해 형태를 얻습니다. 건조, 초벌, 유약, 재벌. 수백 시간의 기다림 끝에 하나의 그릇이 탄생합니다.</p>
+  <div class="craft-steps">
+    <div class="craft-step">
+      <div class="step-num">01</div>
+      <div class="step-label">Wedging</div>
+      <div class="step-desc">공기를 제거하고 균일한 밀도로 반죽</div>
+    </div>
+    <div class="craft-step">
+      <div class="step-num">02</div>
+      <div class="step-label">Throwing</div>
+      <div class="step-desc">물레에서 원하는 형태로 성형</div>
+    </div>
+    <div class="craft-step">
+      <div class="step-num">03</div>
+      <div class="step-label">Bisque Fire</div>
+      <div class="step-desc">900°C 초벌 소성으로 강도 확보</div>
+    </div>
+    <div class="craft-step">
+      <div class="step-num">04</div>
+      <div class="step-label">Glazing</div>
+      <div class="step-desc">자연 재유약을 손으로 직접 도포</div>
+    </div>
+    <div class="craft-step">
+      <div class="step-num">05</div>
+      <div class="step-label">Final Fire</div>
+      <div class="step-desc">1280°C 고화도 소성, 유약 유리화</div>
+    </div>
+  </div>
+</section>
+
+<!-- UGC 갤러리 -->
+<section class="ugc-section">
+  <div class="ugc-header">
+    <h2 class="section-title" style="margin-bottom:0">From our community</h2>
+    <a href="#" class="ugc-hashtag">#instantwise</a>
+  </div>
+
+  <div class="ugc-slider" id="ugcSlider">
+
+    <!-- Card 1 -->
+    <div class="ugc-card active">
+      <img class="ugc-img" src="ugc-images/ugc1.jpg" alt="UGC 1">
+    </div>
+
+    <!-- Card 2 -->
+    <div class="ugc-card">
+      <img class="ugc-img" src="ugc-images/ugc2.jpg" alt="UGC 2">
+    </div>
+
+    <!-- Card 3 -->
+    <div class="ugc-card">
+      <img class="ugc-img" src="ugc-images/ugc3.jpg" alt="UGC 3">
+    </div>
+
+    <!-- Card 4 -->
+    <div class="ugc-card">
+      <img class="ugc-img" src="ugc-images/ugc4.jpg" alt="UGC 4">
+    </div>
+
+    <!-- Card 5 -->
+    <div class="ugc-card">
+      <img class="ugc-img" src="ugc-images/ugc5.jpg" alt="UGC 5">
+    </div>
+
+  </div>
+
+  <!-- 도트 인디케이터 -->
+  <div class="ugc-dots" id="ugcDots">
+    <div class="ugc-dot active"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+    <div class="ugc-dot"></div>
+  </div>
+</section>
+
+
+<script>
+// ── 글레이즈 컬러 데이터 ──
+const glazeColors = {
+  sand: {
+    name: 'Natural Sand',
+    body: 'radial-gradient(ellipse 60% 70% at 40% 35%, #F0E8D8 0%, #D4C4A8 30%, #B8A888 60%, #9A8C70 100%)',
+    rim: 'rgba(255,220,180,0.35)',
+    particle: '#C4956A',
+    bg: 'rgba(212, 196, 168, 0.18)',
+  },
+  sage: {
+    name: 'Celadon Sage',
+    body: 'radial-gradient(ellipse 60% 70% at 40% 35%, #D4E8D0 0%, #8FA68A 30%, #6A8C64 60%, #4A6C44 100%)',
+    rim: 'rgba(160,220,160,0.25)',
+    particle: '#7A8C72',
+    bg: 'rgba(106, 138, 98, 0.14)',
+  },
+  clay: {
+    name: 'Iron Clay',
+    body: 'radial-gradient(ellipse 60% 70% at 40% 35%, #E8C4A0 0%, #C4956A 30%, #A06040 60%, #784030 100%)',
+    rim: 'rgba(220,140,80,0.3)',
+    particle: '#B5603A',
+    bg: 'rgba(160, 96, 64, 0.14)',
+  },
+  slate: {
+    name: 'Storm Slate',
+    body: 'radial-gradient(ellipse 60% 70% at 40% 35%, #C8D8E8 0%, #8AA4B8 30%, #5A7A92 60%, #3A5A72 100%)',
+    rim: 'rgba(140,180,220,0.3)',
+    particle: '#7B8FA0',
+    bg: 'rgba(90, 122, 146, 0.14)',
+  }
+};
+
+let currentGlaze = 'sand';
+
+// ── 3D 틸트 물리 ──
+const tiltCard = document.getElementById('tiltCard');
+const tiltContainer = document.getElementById('tiltContainer');
+const specMain = document.getElementById('specMain');
+const specSharp = document.getElementById('specSharp');
+const dragHint = document.getElementById('dragHint');
+const tiltIndicator = document.getElementById('tiltIndicator');
+const stageBg = document.getElementById('stageBg');
+
+let targetX = 0, targetY = 0;
+let currentX = 0, currentY = 0;
+let isInteracting = false;
+let animFrame;
+let hintHidden = false;
+
+// 스프링 물리 설정
+const SPRING_STIFFNESS = 0.12;
+const SPRING_DAMPING = 0.78;
+const MAX_TILT = 22;
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function updateTilt() {
+  currentX = lerp(currentX, targetX, SPRING_STIFFNESS);
+  currentY = lerp(currentY, targetY, SPRING_STIFFNESS);
+
+  tiltCard.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+
+  // 스페큘러 하이라이트 이동
+  // 틸트 방향 반대로 빛 이동 (물리적으로 자연스럽게)
+  const lightX = 15 + (-currentY / MAX_TILT) * 30; // 0~60%
+  const lightY = 8 + (-currentX / MAX_TILT) * 25;  // 0~40%
+  const sharpX = 20 + (-currentY / MAX_TILT) * 25;
+  const sharpY = 14 + (-currentX / MAX_TILT) * 20;
+
+  specMain.style.left = `${lightX}%`;
+  specMain.style.top = `${lightY}%`;
+  specSharp.style.left = `${sharpX}%`;
+  specSharp.style.top = `${sharpY}%`;
+
+  // 하이라이트 강도 변화 (더 기울일수록 강하게)
+  const intensity = Math.sqrt(currentX * currentX + currentY * currentY) / MAX_TILT;
+  specMain.style.opacity = 0.7 + intensity * 0.3;
+  specSharp.style.opacity = 0.6 + intensity * 0.4;
+
+  // 배경 그라디언트 미묘하게 이동
+  const bgX = 50 + currentY * 0.8;
+  const bgY = 50 + currentX * 0.8;
+  stageBg.style.background = `radial-gradient(ellipse 80% 70% at ${bgX}% ${bgY}%, #F5F0E8 0%, #FAF8F4 100%)`;
+
+  animFrame = requestAnimationFrame(updateTilt);
+}
+
+animFrame = requestAnimationFrame(updateTilt);
+
+// ── 터치 이벤트 (모바일 핵심) ──
+let touchStartX = 0, touchStartY = 0;
+let containerRect;
+
+tiltContainer.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  isInteracting = true;
+  containerRect = tiltContainer.getBoundingClientRect();
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+
+  tiltIndicator.classList.add('visible');
+  if (!hintHidden) {
+    dragHint.classList.add('hidden');
+    hintHidden = true;
+  }
+
+  // 터치 시 파티클 발사
+  spawnParticles(3);
+}, { passive: false });
+
+tiltContainer.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!isInteracting) return;
+
+  const touch = e.touches[0];
+  const rect = containerRect;
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const deltaX = touch.clientX - centerX;
+  const deltaY = touch.clientY - centerY;
+
+  targetY = (deltaX / (rect.width / 2)) * MAX_TILT;
+  targetX = -(deltaY / (rect.height / 2)) * MAX_TILT;
+
+  // 클램프
+  targetX = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetX));
+  targetY = Math.max(-MAX_TILT, Math.min(MAX_TILT, targetY));
+}, { passive: false });
+
+tiltContainer.addEventListener('touchend', () => {
+  isInteracting = false;
+  targetX = 0;
+  targetY = 0;
+  tiltIndicator.classList.remove('visible');
+});
+
+// ── 마우스 이벤트 (데스크탑) ──
+tiltContainer.addEventListener('mousemove', (e) => {
+  isInteracting = true;
+  const rect = tiltContainer.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  targetY = ((e.clientX - centerX) / (rect.width / 2)) * MAX_TILT;
+  targetX = -((e.clientY - centerY) / (rect.height / 2)) * MAX_TILT;
+
+  if (!hintHidden) {
+    dragHint.classList.add('hidden');
+    hintHidden = true;
+  }
+});
+
+tiltContainer.addEventListener('mouseleave', () => {
+  isInteracting = false;
+  targetX = 0;
+  targetY = 0;
+});
+
+// ── 자이로스코프 (모바일 옵션) ──
+let gyroEnabled = false;
+let gyroBaseB = null, gyroBaseG = null;
+
+function enableGyro() {
+  if (gyroEnabled) return;
+  window.addEventListener('deviceorientation', (e) => {
+    if (!isInteracting) {
+      if (gyroBaseB === null) { gyroBaseB = e.beta; gyroBaseG = e.gamma; }
+      const dB = (e.beta - gyroBaseB) * 0.5;
+      const dG = (e.gamma - gyroBaseG) * 0.5;
+      targetX = Math.max(-MAX_TILT * 0.6, Math.min(MAX_TILT * 0.6, dB));
+      targetY = Math.max(-MAX_TILT * 0.6, Math.min(MAX_TILT * 0.6, dG));
+    }
+  });
+  gyroEnabled = true;
+}
+
+// iOS 권한 요청
+if (typeof DeviceOrientationEvent !== 'undefined' &&
+    typeof DeviceOrientationEvent.requestPermission === 'function') {
+  document.getElementById('stage').addEventListener('click', () => {
+    DeviceOrientationEvent.requestPermission().then(state => {
+      if (state === 'granted') enableGyro();
+    });
+  }, { once: true });
+} else if (window.DeviceOrientationEvent) {
+  enableGyro();
+}
+
+// ── 파티클 ──
+const particlesEl = document.getElementById('particles');
+
+function spawnParticles(count = 5) {
+  const glaze = glazeColors[currentGlaze];
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 3 + Math.random() * 5;
+    const left = 30 + Math.random() * 40;
+    const bottom = 25 + Math.random() * 30;
+    const delay = Math.random() * 0.8;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${left}%; bottom:${bottom}%;
+      background:${glaze.particle};
+      animation-delay:${delay}s;
+      animation-duration:${3 + Math.random() * 2}s;
+    `;
+    particlesEl.appendChild(p);
+    setTimeout(() => p.remove(), (delay + 5) * 1000);
+  }
+}
+
+// 주기적 파티클
+setInterval(() => spawnParticles(2), 3000);
+
+// ── 글레이즈 선택 ──
+function selectGlaze(el) {
+  const glaze = el.dataset.glaze;
+  const glazeData = glazeColors[glaze];
+  currentGlaze = glaze;
+
+  // 기존 active 제거
+  document.querySelectorAll('.glaze-swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+
+  // 이름 업데이트
+  document.getElementById('glazeNameLabel').textContent = glazeData.name;
+
+  // 세라믹 바디 컬러 전환
+  const ceramicBody = document.getElementById('ceramicBody');
+  ceramicBody.style.transition = 'background 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+  ceramicBody.style.background = glazeData.body;
+
+  // 파티클
+  spawnParticles(6);
+
+  // 햅틱 피드백 (지원 기기)
+  if (navigator.vibrate) navigator.vibrate(12);
+
+  // 바디 클래스
+  document.body.className = `glaze-${glaze}`;
+}
+
+// ── 사이즈 선택 ──
+function selectSize(el) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  if (navigator.vibrate) navigator.vibrate(8);
+}
+
+// ── 위시리스트 ──
+function toggleWish(btn) {
+  btn.classList.toggle('liked');
+  if (navigator.vibrate) navigator.vibrate([10, 50, 20]);
+}
+
+// ── 아코디언 ──
+function toggleDetail(toggle) {
+  const content = toggle.nextElementSibling;
+  toggle.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+// ── UGC 슬라이더 ──
+const ugcSlider = document.getElementById('ugcSlider');
+const ugcCards = ugcSlider.querySelectorAll('.ugc-card');
+const ugcDots = document.querySelectorAll('.ugc-dot');
+let activeIndex = 0;
+
+function updateUgcActive() {
+  const sliderRect = ugcSlider.getBoundingClientRect();
+  const centerX = sliderRect.left + sliderRect.width / 2;
+  let closest = 0, minDist = Infinity;
+  ugcCards.forEach((card, i) => {
+    const rect = card.getBoundingClientRect();
+    const dist = Math.abs(rect.left + rect.width / 2 - centerX);
+    if (dist < minDist) { minDist = dist; closest = i; }
+  });
+  if (closest !== activeIndex) {
+    ugcCards[activeIndex].classList.remove('active');
+    ugcDots[activeIndex].classList.remove('active');
+    activeIndex = closest;
+    ugcCards[activeIndex].classList.add('active');
+    ugcDots[activeIndex].classList.add('active');
+    if (navigator.vibrate) navigator.vibrate(6);
+  }
+}
+
+ugcSlider.addEventListener('scroll', updateUgcActive, { passive: true });
+
+// 드래그 (데스크탑)
+let isDragging = false, dragStartX = 0, dragScrollLeft = 0;
+
+ugcSlider.addEventListener('mousedown', e => {
+  isDragging = true;
+  dragStartX = e.pageX - ugcSlider.offsetLeft;
+  dragScrollLeft = ugcSlider.scrollLeft;
+  ugcSlider.classList.add('dragging');
+});
+
+ugcSlider.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - ugcSlider.offsetLeft;
+  ugcSlider.scrollLeft = dragScrollLeft - (x - dragStartX) * 1.2;
+});
+
+['mouseup', 'mouseleave'].forEach(ev =>
+  ugcSlider.addEventListener(ev, () => {
+    isDragging = false;
+    ugcSlider.classList.remove('dragging');
+  })
+);
+
+// UGC 좋아요
+function toggleUgcLike(btn) {
+  btn.classList.toggle('liked');
+  if (navigator.vibrate) navigator.vibrate([10, 40, 15]);
+}
+
+// ── 스크롤 시 파티클 트리거 ──
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const s = window.scrollY;
+  if (Math.abs(s - lastScroll) > 200) {
+    spawnParticles(3);
+    lastScroll = s;
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
